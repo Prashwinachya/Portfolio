@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode, type SyntheticEvent, type RefObject } from 'react';
 import { 
   Code2, 
   Terminal, 
@@ -126,9 +126,11 @@ const CareerGuidance = ({ className = '' }) => (
 // --- Custom Hooks ---
 
 // Hook for scroll animations
-const useIntersectionObserver = (options = { threshold: 0.1, triggerOnce: true }) => {
+const useIntersectionObserver = (
+  options = { threshold: 0.1, triggerOnce: true }
+): [RefObject<HTMLDivElement | null>, boolean] => {
   const [isIntersecting, setIsIntersecting] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -150,7 +152,15 @@ const useIntersectionObserver = (options = { threshold: 0.1, triggerOnce: true }
 };
 
 // Animated Section Wrapper
-const AnimatedSection = ({ children, className = '', delay = '' }) => {
+const AnimatedSection = ({
+  children,
+  className = '',
+  delay = ''
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: string;
+}) => {
   const [ref, isVisible] = useIntersectionObserver();
   return (
     <div 
@@ -165,9 +175,15 @@ const AnimatedSection = ({ children, className = '', delay = '' }) => {
 // --- Main Application ---
 
 export default function App() {
-  const [imageError, setImageError] = useState(false);
-
-  const projects = [
+  const projects: Array<{
+    title: string;
+    description: string;
+    tags: string[];
+    color: string;
+    image?: string;
+    icon?: ReactNode;
+    highlight?: boolean;
+  }> = [
     {
       title: "V Finance",
       description: "A comprehensive financial management and tracking platform built to streamline transactions and user portfolios.",
@@ -245,9 +261,9 @@ export default function App() {
               src="image_462f1c.jpg" 
               alt="Prashwin PJ Portrait" 
               className="w-full h-full object-cover object-center scale-105 filter brightness-[0.3] saturate-[0.6] grayscale-[0.3]"
-              onError={(e) => {
+              onError={(e: SyntheticEvent<HTMLImageElement>) => {
                 console.error("Primary background image failed to load, falling back...");
-                e.target.src = "PRASHWIN.jpg";
+                e.currentTarget.src = "PRASHWIN.jpg";
               }}
             />
             {/* Pure black overlays for deep contrast */}
@@ -351,9 +367,9 @@ export default function App() {
                           src={project.image} 
                           alt={project.title} 
                           className="max-h-full max-w-full object-contain rounded-lg filter drop-shadow-lg transition-transform duration-500 group-hover:scale-105"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.parentNode.className = `h-52 w-full bg-gradient-to-br ${project.color} flex items-center justify-center p-6 relative overflow-hidden`;
+                          onError={(e: SyntheticEvent<HTMLImageElement>) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.parentElement?.classList.add('bg-gradient-to-br', project.color);
                           }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
