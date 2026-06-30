@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode, type SyntheticEvent, type RefObject } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { 
   Code2, 
   Terminal, 
@@ -6,10 +6,9 @@ import {
   Database, 
   ChevronRight, 
   Mail, 
-  ExternalLink,
-  MousePointer2
+  ExternalLink
 } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 // Inline SVG replacements for brand icons removed from lucide-react v1.x
 const Github = ({ className = '' }) => (
@@ -198,7 +197,7 @@ const MagneticButton = ({ children, href, className = '' }: { children: ReactNod
 };
 
 // --- 3D Card ---
-const Card3D = ({ children, className = '', highlight = false }: { children: ReactNode; className?: string; highlight?: boolean }) => {
+const Card3D = ({ children, className = '' }: { children: ReactNode; className?: string; highlight?: boolean }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
