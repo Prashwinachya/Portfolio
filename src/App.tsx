@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { 
   Code2, 
   Terminal, 
@@ -158,7 +158,13 @@ const CustomCursor = () => {
 };
 
 // --- Magnetic Button ---
-const MagneticButton = ({ children, href, className = '' }: { children: ReactNode; href?: string; className?: string }) => {
+const MagneticButton = ({ children, className = '', href, target, rel }: { 
+  children: ReactNode; 
+  className?: string; 
+  href?: string;
+  target?: string;
+  rel?: string;
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -186,10 +192,12 @@ const MagneticButton = ({ children, href, className = '' }: { children: ReactNod
     <motion.a
       ref={ref}
       href={href}
+      className={className}
+      target={target}
+      rel={rel}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x, y }}
-      className={className}
     >
       {children}
     </motion.a>
@@ -266,76 +274,79 @@ const AnimatedSection = ({
 const FloatingShapes = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Animated circles */}
-      {[...Array(8)].map((_, i) => (
+      {/* Animated circles - reduced for performance */}
+      {[...Array(4)].map((_, i) => (
         <motion.div
           key={`circle-${i}`}
           className="absolute rounded-full border-2 border-pink-500/20"
           style={{
             width: 100 + i * 80,
             height: 100 + i * 80,
-            left: `${10 + i * 12}%`,
-            top: `${20 + i * 8}%`,
+            left: `${10 + i * 20}%`,
+            top: `${20 + i * 15}%`,
+            willChange: "transform, opacity",
           }}
           animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.1, 0.3, 0.1],
+            scale: [1, 1.15, 1],
+            rotate: [0, 45, 0],
+            opacity: [0.1, 0.25, 0.1],
           }}
           transition={{
-            duration: 6 + i * 0.5,
+            duration: 8 + i * 1,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.3,
+            delay: i * 0.4,
           }}
         />
       ))}
       
-      {/* Animated hexagons */}
-      {[...Array(5)].map((_, i) => (
+      {/* Animated hexagons - reduced for performance */}
+      {[...Array(3)].map((_, i) => (
         <motion.div
           key={`hex-${i}`}
           className="absolute text-cyan-400/20"
           style={{
-            left: `${5 + i * 20}%`,
-            top: `${15 + i * 15}%`,
-            fontSize: `${40 + i * 20}px`,
+            left: `${10 + i * 35}%`,
+            top: `${20 + i * 25}%`,
+            fontSize: `${40 + i * 25}px`,
+            willChange: "transform, opacity",
           }}
           animate={{
-            y: [0, -30, 0],
+            y: [0, -25, 0],
             rotate: [0, 180, 360],
-            opacity: [0.1, 0.4, 0.1],
+            opacity: [0.1, 0.35, 0.1],
           }}
           transition={{
-            duration: 8 + i,
+            duration: 10 + i * 1.5,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.8,
+            delay: i * 1,
           }}
         >
           ⬡
         </motion.div>
       ))}
 
-      {/* Floating lines */}
-      {[...Array(6)].map((_, i) => (
+      {/* Floating lines - reduced for performance */}
+      {[...Array(4)].map((_, i) => (
         <motion.div
           key={`line-${i}`}
           className="absolute h-0.5 bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"
           style={{
             width: `${200 + i * 100}px`,
-            left: `${i * 15}%`,
-            top: `${30 + i * 12}%`,
+            left: `${i * 20}%`,
+            top: `${30 + i * 18}%`,
+            willChange: "transform, opacity",
           }}
           animate={{
-            x: [0, 100, 0],
-            opacity: [0, 0.5, 0],
+            x: [0, 80, 0],
+            opacity: [0, 0.4, 0],
           }}
           transition={{
-            duration: 7 + i,
+            duration: 9 + i * 1,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.5,
+            delay: i * 0.7,
           }}
         />
       ))}
@@ -408,8 +419,10 @@ const Portrait3D = () => {
           alt="Prashwin PJ"
           className="w-full h-full object-cover"
           style={{ transform: "translateZ(30px)" }}
-          animate={{ scale: [1, 1.03, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          decoding="async"
+          fetchPriority="high"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Overlay gradient */}
@@ -417,15 +430,15 @@ const Portrait3D = () => {
         
         {/* Scan line effect */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/5 to-transparent"
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/3 to-transparent"
           animate={{ y: ["0%", "100%"] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
         />
 
         {/* Grid overlay */}
         <div className="absolute inset-0" style={{
-          backgroundImage: "linear-gradient(rgba(236,72,153,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(236,72,153,0.05) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
+          backgroundImage: "linear-gradient(rgba(236,72,153,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236,72,153,0.03) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
         }} />
       </div>
 
@@ -460,6 +473,17 @@ const Portrait3D = () => {
 
 // --- Main Application ---
 export default function App() {
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.matchMedia('(pointer: fine) and (min-width: 768px)').matches);
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   const projects: Array<{
     title: string;
     description: string;
@@ -512,26 +536,28 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-pink-500/30 overflow-x-hidden">
       
-      {/* Custom Cursor */}
-      <CustomCursor />
+      {/* Custom Cursor - only on desktop */}
+      {isDesktop && <CustomCursor />}
       
       {/* Dynamic Background Animation */}
-      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
+      <div className="fixed inset-0 z-0 opacity-15 pointer-events-none">
         <motion.div 
-          className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-pink-500 blur-[150px]"
+          className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] rounded-full bg-pink-500 blur-[120px]"
+          style={{ willChange: "transform" }}
           animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-cyan-500 blur-[150px]"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
+            x: [0, 80, 0],
+            y: [0, 40, 0],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-[-10%] right-[-10%] w-[35%] h-[35%] rounded-full bg-cyan-500 blur-[120px]"
+          style={{ willChange: "transform" }}
+          animate={{
+            x: [0, -80, 0],
+            y: [0, -40, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
@@ -575,7 +601,7 @@ export default function App() {
           className="relative min-h-screen flex flex-col md:flex-row items-center justify-center pt-24 px-6 overflow-hidden bg-black"
         >
           {/* Background elements */}
-          <FloatingShapes />
+          {isDesktop && <FloatingShapes />}
           
           <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center gap-12 md:gap-20">
             
@@ -648,6 +674,14 @@ export default function App() {
                     >
                       <ChevronRight className="w-4 h-4" />
                     </motion.span>
+                  </MagneticButton>
+                  <MagneticButton 
+                    href="https://drive.google.com/file/d/1w2k1V3_6lDGBuyYH7f3gv3-TLVYpCVr4/view?usp=sharing" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-3 rounded-full bg-transparent border border-white/30 text-white font-medium hover:bg-white/10 hover:border-pink-400/60 transition-all flex items-center gap-2"
+                  >
+                    📄 My Resume
                   </MagneticButton>
                   <MagneticButton 
                     href="#contact" 
@@ -808,37 +842,127 @@ export default function App() {
 
         {/* Contact/Footer */}
         <section id="contact" className="py-20 px-6 border-t border-white/8 bg-zinc-950">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto">
             <AnimatedSection>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">Let's Work Together</h2>
-              <p className="text-zinc-400 mb-10 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white text-center">Let's Work Together</h2>
+              <p className="text-zinc-400 mb-12 max-w-2xl mx-auto text-center">
                 I'm currently available for new projects and collaborations. 
                 Whether you have an idea to build or just want to say hi, my inbox is always open!
               </p>
-              
-              <div className="flex justify-center gap-6 mb-16">
-                {[
-                  { icon: <Mail className="w-5 h-5" />, color: "hover:bg-pink-500 hover:text-black" },
-                  { icon: <Github className="w-5 h-5" />, color: "hover:bg-white hover:text-black" },
-                  { icon: <Linkedin className="w-5 h-5" />, color: "hover:bg-blue-600" },
-                ].map((social, i) => (
-                  <motion.a
-                    key={i}
-                    href="#"
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                    className={`w-12 h-12 rounded-full bg-white/5 flex items-center justify-center transition-all duration-300 border border-white/10 hover:border-transparent text-zinc-300 ${social.color}`}
-                  >
-                    {social.icon}
-                  </motion.a>
-                ))}
-              </div>
             </AnimatedSection>
+
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+              {/* Left: Contact Form */}
+              <AnimatedSection className="w-full">
+                <motion.form 
+                  className="space-y-6 bg-black/50 p-8 rounded-2xl border border-white/10"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    alert("Thank you for your message! I'll get back to you soon!");
+                    e.currentTarget.reset();
+                  }}
+                >
+                  <h3 className="text-xl font-bold text-white mb-4">Send me a message</h3>
+                  
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2">Your Name</label>
+                    <input 
+                      type="text" 
+                      required 
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                      placeholder="Eeva"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2">Your Email</label>
+                    <input 
+                      type="email" 
+                      required 
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500"
+                      placeholder="eeva@gmail.com"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-2">Message</label>
+                    <textarea 
+                      rows={5}
+                      required 
+                      className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500 resize-none"
+                      placeholder="Hello, I'd like to work with you on..."
+                    />
+                  </div>
+                  
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-bold hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300"
+                  >
+                    Send Message
+                  </motion.button>
+                </motion.form>
+              </AnimatedSection>
+
+              {/* Right: Contact Info & Socials */}
+              <AnimatedSection delay={0.2} className="w-full">
+                <div className="space-y-8">
+                  <div className="flex items-center gap-4 p-6 bg-black/50 rounded-2xl border border-white/10">
+                    <div className="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-pink-500" />
+                    </div>
+                    <a 
+                      href="mailto:prashwinpvt12@gmail.com" 
+                      className="text-zinc-300 hover:text-pink-400 transition-colors"
+                    >
+                      prashwinpvt12@gmail.com
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-4 p-6 bg-black/50 rounded-2xl border border-white/10">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-cyan-500" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                      </svg>
+                    </div>
+                    <a 
+                      href="tel:+916360467265" 
+                      className="text-zinc-300 hover:text-cyan-400 transition-colors"
+                    >
+                      +91 6360467265
+                    </a>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="text-zinc-400 text-sm">Or connect with me:</div>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    {[
+                      { icon: <Github className="w-5 h-5" />, color: "hover:bg-white hover:text-black", href: "https://github.com/Prashwinachya" },
+                      { icon: <Linkedin className="w-5 h-5" />, color: "hover:bg-blue-600", href: "https://www.linkedin.com/in/prashwinpj/" },
+                    ].map((social, i) => (
+                      <motion.a
+                        key={i}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                        className={`w-14 h-14 rounded-full bg-white/5 flex items-center justify-center transition-all duration-300 border border-white/10 hover:border-transparent text-zinc-300 ${social.color}`}
+                      >
+                        {social.icon}
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+            </div>
           </div>
           
-          <div className="text-center text-zinc-600 text-sm mt-10">
-            <p>© {new Date().getFullYear()} Prashwin PJ.</p>
+          <div className="text-center text-zinc-600 text-sm mt-16">
+            <p>© {new Date().getFullYear()} Prashwin PJ. All rights reserved.</p>
           </div>
         </section>
 
@@ -861,7 +985,7 @@ export default function App() {
           perspective: 1000px;
         }
         
-        @media (pointer: coarse) {
+        @media (pointer: coarse) or (max-width: 768px) {
           * { cursor: auto !important; }
         }
       `}} />
