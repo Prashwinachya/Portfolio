@@ -492,6 +492,8 @@ export default function App() {
     image?: string;
     icon?: ReactNode;
     highlight?: boolean;
+    githubUrl?: string;
+    websiteUrl?: string;
   }> = [
     {
       title: "V Finance",
@@ -499,7 +501,9 @@ export default function App() {
       tags: ["Java", "Web Technologies", "Database"],
       color: "from-pink-500 to-purple-500",
       icon: <VFinance className="w-12 h-12" />,
-      highlight: true
+      highlight: true,
+      githubUrl: "https://github.com/Prashwinachya/V-Finance.git",
+      websiteUrl: ""
     },
     {
       title: "Industry Equipment System",
@@ -507,6 +511,8 @@ export default function App() {
       tags: ["C Programming", "System Architecture", "UI/UX"],
       color: "from-blue-500 to-cyan-500",
       icon: <IndustryEquipment className="w-12 h-12" />,
+      githubUrl: "https://github.com/Prashwinachya/Industrial-Equipment-System.git",
+      websiteUrl: ""
     },
     {
       title: "Vote Fraud Detection System",
@@ -514,6 +520,8 @@ export default function App() {
       tags: ["Java", "Security", "Algorithms"],
       color: "from-cyan-500 to-teal-500",
       icon: <VoteSecurity className="w-12 h-12" />,
+      githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
+      websiteUrl: ""
     },
     {
       title: "Career Guidance System",
@@ -521,7 +529,9 @@ export default function App() {
       tags: ["Web Dev", "API Integration", "Database"],
       color: "from-orange-500 to-pink-600",
       icon: <CareerGuidance className="w-12 h-12" />,
-      highlight: true
+      highlight: true,
+      githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
+      websiteUrl: ""
     }
   ];
 
@@ -828,6 +838,40 @@ export default function App() {
                               {tag}
                             </motion.span>
                           ))}
+                        </div>
+
+                        <div className="flex flex-wrap gap-3 mt-6">
+                          <motion.a
+                            href={project.githubUrl || undefined}
+                            target={project.githubUrl ? '_blank' : undefined}
+                            rel={project.githubUrl ? 'noopener noreferrer' : undefined}
+                            onClick={(e) => {
+                              if (!project.githubUrl) {
+                                e.preventDefault();
+                              }
+                            }}
+                            whileHover={project.githubUrl ? { scale: 1.03, y: -2 } : undefined}
+                            className={`inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-sm font-medium transition-all ${project.githubUrl ? 'border-pink-500/40 bg-pink-500/10 text-pink-300 hover:bg-pink-500/20' : 'border-white/10 bg-white/5 text-zinc-500 cursor-not-allowed'}`}
+                          >
+                            <Code2 className="w-4 h-4" />
+                            <span>Source Code</span>
+                          </motion.a>
+
+                          <motion.a
+                            href={project.websiteUrl || undefined}
+                            target={project.websiteUrl ? '_blank' : undefined}
+                            rel={project.websiteUrl ? 'noopener noreferrer' : undefined}
+                            onClick={(e) => {
+                              if (!project.websiteUrl) {
+                                e.preventDefault();
+                              }
+                            }}
+                            whileHover={project.websiteUrl ? { scale: 1.03, y: -2 } : undefined}
+                            className={`inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-sm font-medium transition-all ${project.websiteUrl ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20' : 'border-white/10 bg-white/5 text-zinc-500 cursor-not-allowed'}`}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            <span>Website</span>
+                          </motion.a>
                         </div>
                       </div>
                       
