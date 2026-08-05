@@ -6,9 +6,14 @@ import {
   Database, 
   ChevronRight, 
   Mail, 
-  ExternalLink
+  ExternalLink,
+  Menu,
+  X,
+  Award,
+  Calendar,
+  ZoomIn
 } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 // Inline SVG replacements for brand icons removed from lucide-react v1.x
 const Github = ({ className = '' }) => (
@@ -115,6 +120,85 @@ const CareerGuidance = ({ className = '' }) => (
     </g>
   </svg>
 );
+
+// --- Count Up ---
+const CountUp = ({ to, className = '', duration = 1.6, delay = 0 }: { 
+  to: number; 
+  className?: string; 
+  duration?: number;
+  delay?: number;
+}) => {
+  const [display, setDisplay] = useState(0);
+  const startedRef = useRef(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !startedRef.current) {
+        startedRef.current = true;
+        const startTime = performance.now() + delay * 1000;
+        const tick = (now: number) => {
+          if (now < startTime) { requestAnimationFrame(tick); return; }
+          const t = Math.min(1, (now - startTime) / (duration * 1000));
+          const eased = 1 - Math.pow(1 - t, 3);
+          setDisplay(Math.round(eased * to));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration, delay]);
+
+  return <span ref={ref} className={className}>{display}</span>;
+};
+
+// --- Role Carousel ---
+const RoleCarousel = () => {
+  const roles = [
+    { text: "Web Developer", color: "from-pink-400 to-fuchsia-400", icon: <Code2 className="w-5 h-5" /> },
+    { text: "Vlogger", color: "from-red-400 to-pink-400", icon: <Monitor className="w-5 h-5" /> },
+    { text: "Graphic Designer", color: "from-purple-400 to-fuchsia-400", icon: <Terminal className="w-5 h-5" /> },
+    { text: "AI Tool Professional", color: "from-cyan-400 to-blue-400", icon: <Database className="w-5 h-5" /> },
+  ];
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((p) => (p + 1) % roles.length), 3000);
+    return () => clearInterval(t);
+  }, [roles.length]);
+
+  return (
+    <div className="mt-5 flex items-center justify-center lg:justify-start gap-3 min-h-[2.25rem]">
+      <span className="text-lg md:text-xl text-zinc-400 font-medium hidden sm:inline">Crafting as</span>
+      <span className="inline-flex items-center gap-3 bg-white/[0.025] border border-white/10 rounded-full px-5 py-2 overflow-hidden">
+        {roles.map((r, i) => (
+          <AnimatePresence mode="wait" key={i}>
+            {i === idx && (
+              <motion.div
+                initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -18, filter: 'blur(8px)' }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="flex items-center gap-2"
+              >
+                <span className={`bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
+                  {r.icon}
+                </span>
+                <span className={`text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
+                  {r.text}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        ))}
+      </span>
+    </div>
+  );
+};
 
 // --- Custom Cursor ---
 const CustomCursor = () => {
@@ -471,9 +555,74 @@ const Portrait3D = () => {
   );
 };
 
+// --- Magnetic Nav Link ---
+const MagneticNavLink = ({ 
+  children, 
+  className = '', 
+  href, 
+  onClick,
+  isActive 
+}: { 
+  children: ReactNode; 
+  className?: string; 
+  href: string;
+  onClick?: () => void;
+  isActive?: boolean;
+}) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = (mouseX / width - 0.5) * 2;
+    const yPct = (mouseY / height - 0.5) * 2;
+    x.set(xPct * 12);
+    y.set(yPct * 12);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      onClick={onClick}
+      className={className}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x, y }}
+      whileHover={{ color: '#ffffff' }}
+    >
+      <span className="relative inline-block">
+        {children}
+        <motion.span
+          className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400`}
+          initial={{ width: 0 }}
+          animate={{ width: isActive ? '100%' : 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </span>
+    </motion.a>
+  );
+};
+
 // --- Main Application ---
 export default function App() {
   const [isDesktop, setIsDesktop] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -482,6 +631,33 @@ export default function App() {
     checkDesktop();
     window.addEventListener('resize', checkDesktop);
     return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolledPct = height > 0 ? (winScroll / height) * 100 : 0;
+      setScrollProgress(scrolledPct);
+
+      const sections = ['home', 'skills', 'projects', 'certifications', 'contact'];
+      let current = 'home';
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 150) {
+            current = section;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const projects: Array<{
@@ -532,6 +708,25 @@ export default function App() {
       highlight: true,
       githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
       websiteUrl: ""
+    },
+    {
+      title: "Vote Fraud Detection System",
+      description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
+      tags: ["Java", "Security", "Algorithms"],
+      color: "from-cyan-500 to-teal-500",
+      icon: <VoteSecurity className="w-12 h-12" />,
+      githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
+      websiteUrl: ""
+    },
+    {
+      title: "Career Guidance System",
+      description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
+      tags: ["Web Dev", "API Integration", "Database"],
+      color: "from-orange-500 to-pink-600",
+      icon: <CareerGuidance className="w-12 h-12" />,
+      highlight: true,
+      githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
+      websiteUrl: ""
     }
   ];
 
@@ -542,6 +737,66 @@ export default function App() {
     { name: "JavaScript", icon: <Code2 className="w-6 h-6" />, level: 88 },
     { name: "React", icon: <Code2 className="w-6 h-6" />, level: 80 },
   ];
+
+  const certifications: Array<{
+    title: string;
+    issuer: string;
+    date: string;
+    image: string;
+    credentialUrl?: string;
+    color: string;
+  }> = [
+    {
+      title: "Full Stack Web Development",
+      issuer: "Certification Authority",
+      date: "March 2025",
+      image: "/certifications/cert1.jpg",
+      credentialUrl: "",
+      color: "from-pink-500/40 to-purple-500/40",
+    },
+    {
+      title: "Java Programming Masterclass",
+      issuer: "Oracle University",
+      date: "January 2025",
+      image: "/certifications/cert2.jpg",
+      credentialUrl: "",
+      color: "from-blue-500/40 to-cyan-500/40",
+    },
+    {
+      title: "UI/UX Design Professional",
+      issuer: "Google Career Certificates",
+      date: "November 2024",
+      image: "/certifications/cert3.jpg",
+      credentialUrl: "",
+      color: "from-orange-500/40 to-pink-500/40",
+    },
+    {
+      title: "AI & Machine Learning Fundamentals",
+      issuer: "Coursera - Stanford",
+      date: "August 2024",
+      image: "/certifications/cert4.jpg",
+      credentialUrl: "",
+      color: "from-cyan-500/40 to-teal-500/40",
+    },
+    {
+      title: "Database Management System",
+      issuer: "Microsoft Learn",
+      date: "June 2024",
+      image: "/certifications/cert5.jpg",
+      credentialUrl: "",
+      color: "from-purple-500/40 to-indigo-500/40",
+    },
+    {
+      title: "Data Structures & Algorithms",
+      issuer: "Coding Platform",
+      date: "April 2024",
+      image: "/certifications/cert6.jpg",
+      credentialUrl: "",
+      color: "from-emerald-500/40 to-cyan-500/40",
+    },
+  ];
+
+  const [selectedCert, setSelectedCert] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-pink-500/30 overflow-x-hidden">
@@ -575,32 +830,164 @@ export default function App() {
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="fixed top-0 w-full z-50 bg-black/85 backdrop-blur-md border-b border-white/8 transition-all"
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+          scrolled 
+            ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_rgba(236,72,153,0.1)]' 
+            : 'bg-black/60 backdrop-blur-md border-b border-transparent'
+        }`}
       >
+        <motion.div 
+          className="h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 origin-left"
+          style={{ scaleX: scrollProgress / 100 }}
+        />
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <motion.div 
+          <motion.a 
+            href="#home"
             whileHover={{ scale: 1.05 }}
-            className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400"
+            whileTap={{ scale: 0.97 }}
+            className="relative text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 group"
           >
-            Prashwin PJ
-          </motion.div>
-          <div className="hidden md:flex gap-8 text-sm font-medium text-zinc-400">
-            {['Home', 'Skills', 'Projects', 'Contact'].map((item, i) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.1 }}
-                whileHover={{ scale: 1.1, color: '#ec4899' }}
-                className="hover:text-white transition-colors"
-              >
-                {item}
-              </motion.a>
-            ))}
+            <span className="relative z-10">Prashwin PJ</span>
+            <motion.div
+              className="absolute -inset-2 rounded-xl bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-400/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            />
+          </motion.a>
+
+          <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1 mr-4 px-1.5 py-1 rounded-full bg-white/[0.03] border border-white/5">
+              {['Home', 'Skills', 'Projects', 'Certifications', 'Contact'].map((item, i) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: -15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <MagneticNavLink
+                    href={`#${item.toLowerCase()}`}
+                    isActive={activeSection === item.toLowerCase()}
+                    className="relative px-4 py-2 text-sm font-medium text-zinc-400 rounded-full transition-colors"
+                  >
+                    {item}
+                  </MagneticNavLink>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              {[
+                { icon: <Github className="w-4 h-4" />, href: "https://github.com/Prashwinachya", label: "GitHub" },
+                { icon: <Linkedin className="w-4 h-4" />, href: "https://www.linkedin.com/in/prashwinpj/", label: "LinkedIn" },
+                { icon: <Mail className="w-4 h-4" />, href: "mailto:prashwinpvt12@gmail.com", label: "Email" },
+              ].map((social, i) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target={social.href.startsWith("http") ? "_blank" : undefined}
+                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.08 }}
+                  whileHover={{ scale: 1.15, y: -2 }}
+                  whileTap={{ scale: 0.92 }}
+                  className={`w-9 h-9 rounded-full flex items-center justify-center text-zinc-400 border border-white/5 bg-white/[0.02] transition-all duration-300 ${
+                    social.label === 'GitHub' ? 'hover:text-white hover:bg-white/10 hover:border-white/20' :
+                    social.label === 'LinkedIn' ? 'hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30' :
+                    'hover:text-pink-400 hover:bg-pink-500/10 hover:border-pink-500/30'
+                  }`}
+                  aria-label={social.label}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
           </div>
+
+          <motion.button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            whileTap={{ scale: 0.92 }}
+            className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-zinc-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={mobileMenuOpen ? 'close' : 'menu'}
+                initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
         </div>
+
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden border-t border-white/5 bg-black/95 backdrop-blur-xl"
+            >
+              <div className="px-6 py-6 space-y-2">
+                {['Home', 'Skills', 'Projects', 'Certifications', 'Contact'].map((item, i) => (
+                  <motion.a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`flex items-center justify-between px-5 py-4 rounded-xl font-medium transition-all duration-300 ${
+                      activeSection === item.toLowerCase()
+                        ? 'bg-gradient-to-r from-pink-500/15 via-purple-500/10 to-cyan-500/15 text-white border border-pink-500/20'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
+                    }`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        activeSection === item.toLowerCase()
+                          ? 'bg-gradient-to-r from-pink-500 to-cyan-400'
+                          : 'bg-zinc-600'
+                      }`} />
+                      {item}
+                    </span>
+                    <ChevronRight className={`w-4 h-4 transition-transform ${
+                      activeSection === item.toLowerCase() ? 'text-pink-400 translate-x-0' : 'opacity-0 -translate-x-2'
+                    }`} />
+                  </motion.a>
+                ))}
+
+                <div className="pt-5 mt-5 border-t border-white/5">
+                  <p className="text-xs text-zinc-500 uppercase tracking-widest mb-3 px-2">Connect</p>
+                  <div className="flex gap-3">
+                    {[
+                      { icon: <Github className="w-5 h-5" />, href: "https://github.com/Prashwinachya", bg: "hover:bg-white hover:text-black" },
+                      { icon: <Linkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/prashwinpj/", bg: "hover:bg-blue-600" },
+                      { icon: <Mail className="w-5 h-5" />, href: "mailto:prashwinpvt12@gmail.com", bg: "hover:bg-pink-500" },
+                    ].map((social) => (
+                      <motion.a
+                        key={social.href}
+                        href={social.href}
+                        target={social.href.startsWith("http") ? "_blank" : undefined}
+                        rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.9 }}
+                        className={`flex-1 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-300 transition-all ${social.bg}`}
+                      >
+                        {social.icon}
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
       <main className="relative z-10">
@@ -608,108 +995,279 @@ export default function App() {
         {/* Hero Section - Innovative Design */}
         <section 
           id="home" 
-          className="relative min-h-screen flex flex-col md:flex-row items-center justify-center pt-24 px-6 overflow-hidden bg-black"
+          className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-16 px-6 overflow-hidden bg-black"
         >
           {/* Background elements */}
           {isDesktop && <FloatingShapes />}
+
+          {/* Extra ambient blobs for hero */}
+          <div className="absolute top-[20%] left-[5%] w-72 h-72 rounded-full bg-pink-600/[0.07] blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-[15%] right-[8%] w-80 h-80 rounded-full bg-cyan-500/[0.06] blur-[120px] pointer-events-none" />
+
+          {/* Grid scanlines overlay */}
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-[0.04]"
+            style={{
+              backgroundImage: "linear-gradient(rgba(236,72,153,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.6) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+              maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+            }}
+          />
           
-          <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center gap-12 md:gap-20">
+          <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
             {/* Left: Text Content */}
-            <div className="flex-1 space-y-8 text-center md:text-left">
+            <div className="flex-1 space-y-7 text-center lg:text-left w-full">
               <AnimatedSection>
                 <motion.div
-                  initial={{ letterSpacing: "0.8em", opacity: 0 }}
-                  whileInView={{ letterSpacing: "0.3em", opacity: 1 }}
+                  initial={{ letterSpacing: "1.2em", opacity: 0, y: -20 }}
+                  whileInView={{ letterSpacing: "0.35em", opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.5 }}
+                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex justify-center lg:justify-start"
                 >
-                  <span className="text-pink-500 font-medium tracking-[0.3em] uppercase text-sm md:text-base mb-4 inline-block drop-shadow-md">
+                  <span className="relative inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-pink-500/10 via-purple-500/5 to-cyan-500/10 border border-white/10 text-pink-400 font-semibold tracking-[0.35em] uppercase text-xs md:text-sm">
+                    <span className="relative flex w-2 h-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full w-2 h-2 bg-gradient-to-r from-pink-500 to-cyan-400" />
+                    </span>
                     Welcome to my portfolio
+                    <motion.span
+                      className="absolute inset-0 rounded-full pointer-events-none"
+                      animate={{
+                        boxShadow: [
+                          '0 0 0 0 rgba(236,72,153,0)',
+                          '0 0 0 8px rgba(236,72,153,0.04)',
+                          '0 0 0 0 rgba(236,72,153,0)',
+                        ],
+                      }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+                    />
                   </span>
                 </motion.div>
                 
                 <motion.h1 
-                  className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight text-white drop-shadow-2xl"
-                  initial={{ opacity: 0, x: -100 }}
+                  className="mt-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight"
+                  initial={{ opacity: 0, x: -80 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                  transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  Hi, I'm<br />
-                  <motion.span 
-                    className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-300 drop-shadow-lg"
-                    animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ backgroundSize: '200% 200%' }}
-                  >
-                    Prashwin PJ
-                  </motion.span>
+                  <span className="block text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.08)]">Hi, I'm</span>
+                  <span className="relative inline-block mt-2">
+                    <motion.span 
+                      className="absolute inset-0 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-300 blur-[2px] opacity-60"
+                      aria-hidden="true"
+                    >
+                      Prashwin PJ
+                    </motion.span>
+                    <motion.span 
+                      className="relative bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-fuchsia-400 to-cyan-300"
+                      animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                      transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ backgroundSize: '220% 220%' }}
+                    >
+                      Prashwin PJ
+                    </motion.span>
+                  </span>
                 </motion.h1>
               </AnimatedSection>
 
               <AnimatedSection delay={0.3}>
-                <motion.h3 
-                  className="text-2xl md:text-3xl font-semibold text-zinc-200 flex items-center justify-center md:justify-start gap-3 drop-shadow-lg"
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                {/* Rotating role headline */}
+                <RoleCarousel />
+
+                {/* Role chip cloud */}
+                <motion.div 
+                  className="mt-7 flex flex-wrap gap-2.5 justify-center lg:justify-start"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
                 >
-                  Web Developer · Vlogger · Graphic Designer · AI Tool Professional <Monitor className="w-6 h-6 text-pink-500" />
-                </motion.h3>
+                  {[
+                    { label: 'Web Developer', color: 'from-pink-500/20 to-purple-500/20 border-pink-500/30 text-pink-200', dot: 'bg-pink-400' },
+                    { label: 'Vlogger', color: 'from-red-500/20 to-pink-500/20 border-red-500/30 text-red-200', dot: 'bg-red-400' },
+                    { label: 'Graphic Designer', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-500/30 text-purple-200', dot: 'bg-purple-400' },
+                    { label: 'AI Tool Pro', color: 'from-cyan-500/20 to-blue-500/20 border-cyan-500/30 text-cyan-200', dot: 'bg-cyan-400' },
+                  ].map((chip, i) => (
+                    <motion.span
+                      key={chip.label}
+                      initial={{ opacity: 0, scale: 0.85, y: 10 }}
+                      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.6 + i * 0.08, type: 'spring', stiffness: 350, damping: 20 }}
+                      whileHover={{ y: -3, scale: 1.04 }}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${chip.color} border backdrop-blur-sm text-sm font-medium`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${chip.dot}`} />
+                      {chip.label}
+                    </motion.span>
+                  ))}
+                </motion.div>
                 
                 <motion.p 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="mt-6 text-zinc-300 max-w-xl mx-auto md:mx-0 leading-relaxed text-lg"
+                  transition={{ duration: 0.8, delay: 0.35 }}
+                  className="mt-7 text-zinc-300/90 max-w-xl mx-auto lg:mx-0 leading-relaxed text-[15px] md:text-lg"
                 >
-                  I specialize in building engaging, and highly functional web applications. 
-                  Passionate about converting difficult problems into elegant, user-friendly solutions.
+                  I specialize in building <span className="text-white font-semibold">engaging</span>, and 
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-300 font-semibold mx-1">highly functional</span> 
+                  web applications. Passionate about converting difficult problems into 
+                  <span className="text-white font-medium ml-1">elegant, user-friendly</span> solutions.
                 </motion.p>
               </AnimatedSection>
 
-              <AnimatedSection delay={0.5}>
-                <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-6">
+              {/* Stats row */}
+              <AnimatedSection delay={0.4}>
+                <div className="mt-3 grid grid-cols-3 gap-3 md:gap-5 max-w-lg mx-auto lg:mx-0">
+                  {[
+                    { label: 'Projects', value: 6, suffix: '+', icon: <Code2 className="w-3.5 h-3.5" />, color: 'text-pink-400' },
+                    { label: 'Certs', value: 6, suffix: '+', icon: <Award className="w-3.5 h-3.5" />, color: 'text-purple-400' },
+                    { label: 'Skills', value: 5, suffix: '+', icon: <Monitor className="w-3.5 h-3.5" />, color: 'text-cyan-400' },
+                  ].map((stat, i) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.6 + i * 0.1, type: 'spring', stiffness: 300, damping: 22 }}
+                      whileHover={{ y: -4, scale: 1.02 }}
+                      className="group relative rounded-2xl bg-white/[0.02] border border-white/8 hover:border-white/15 p-3 md:p-4 overflow-hidden transition-colors"
+                    >
+                      <div className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity ${
+                        i === 0 ? 'bg-pink-500/10' : i === 1 ? 'bg-purple-500/10' : 'bg-cyan-500/10'
+                      }`} />
+                      <div className={`inline-flex items-center gap-1.5 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-zinc-500 ${stat.color}`}>
+                        {stat.icon}
+                        {stat.label}
+                      </div>
+                      <div className="mt-2 flex items-baseline gap-0.5">
+                        <CountUp to={stat.value} className="text-2xl md:text-3xl font-black text-white" />
+                        <span className={`text-xl md:text-2xl font-black ${stat.color}`}>{stat.suffix}</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </AnimatedSection>
+
+              <AnimatedSection delay={0.55}>
+                <div className="flex flex-wrap gap-3 md:gap-4 justify-center lg:justify-start pt-6">
                   <MagneticButton 
                     href="#projects" 
-                    className="px-8 py-3 rounded-full bg-white text-black font-semibold hover:bg-pink-400 transition-all shadow-[0_0_25px_rgba(255,255,255,0.15)] flex items-center gap-2 group"
+                    className="group relative px-7 md:px-9 py-3.5 rounded-full text-black font-bold overflow-hidden"
                   >
-                    <span>View My Work</span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-white via-pink-100 to-white bg-[length:200%_100%] animate-gradient-x" />
                     <motion.span
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </motion.span>
+                      className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ boxShadow: '0 0 40px rgba(236,72,153,0.35), 0 0 80px rgba(6,182,212,0.15)' }}
+                    />
+                    <span className="relative flex items-center gap-2.5">
+                      <span className="tracking-tight">View My Work</span>
+                      <motion.span
+                        className="inline-flex w-6 h-6 rounded-full bg-black text-white items-center justify-center"
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </motion.span>
+                    </span>
                   </MagneticButton>
+
+                  <MagneticButton 
+                    href="#certifications" 
+                    className="relative px-7 md:px-8 py-3.5 rounded-full overflow-hidden text-white font-semibold border border-white/15 hover:border-white/25 transition-all"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/12 to-cyan-500/0 opacity-0 hover:opacity-100 transition-opacity duration-500" />
+                    <span className="relative flex items-center gap-2">
+                      <Award className="w-4 h-4 text-pink-400" />
+                      Certifications
+                    </span>
+                  </MagneticButton>
+
                   <MagneticButton 
                     href="https://drive.google.com/file/d/1w2k1V3_6lDGBuyYH7f3gv3-TLVYpCVr4/view?usp=sharing" 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-3 rounded-full bg-transparent border border-white/30 text-white font-medium hover:bg-white/10 hover:border-pink-400/60 transition-all flex items-center gap-2"
+                    className="relative px-7 md:px-8 py-3.5 rounded-full overflow-hidden text-white font-medium border border-white/15 hover:border-white/25 transition-all flex items-center gap-2"
                   >
-                    📄 My Resume
+                    <span className="absolute inset-0 bg-white/5 opacity-0 hover:opacity-100 transition-opacity" />
+                    <span className="relative flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
+                      </svg>
+                      My Resume
+                    </span>
                   </MagneticButton>
-                  <MagneticButton 
-                    href="#contact" 
-                    className="px-8 py-3 rounded-full bg-transparent border border-white/30 text-white font-medium hover:bg-white/10 hover:border-pink-400/60 transition-all flex items-center gap-2"
-                  >
-                    Contact Me
-                  </MagneticButton>
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2 justify-center lg:justify-start text-xs text-zinc-500">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Available for freelance
+                  </span>
+                  <span className="text-zinc-700">·</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Mail className="w-3 h-3" />
+                    prashwinpvt12@gmail.com
+                  </span>
                 </div>
               </AnimatedSection>
             </div>
 
-            {/* Right: 3D Portrait */}
-            <div className="flex-1 flex justify-center">
+            {/* Right: 3D Portrait with floating orbiting badges */}
+            <div className="flex-1 flex justify-center w-full -mt-2 md:-mt-6 lg:-mt-10">
               <AnimatedSection delay={0.4}>
-                <Portrait3D />
+                <div className="relative -translate-y-2 md:-translate-y-4 lg:-translate-y-6">
+                  {/* Large rotating conic ring outside */}
+                  <motion.div
+                    className="absolute -inset-10 rounded-full pointer-events-none opacity-60"
+                    style={{
+                      background: "conic-gradient(from 0deg, rgba(236,72,153,0.22), rgba(139,92,246,0.18), rgba(6,182,212,0.22), rgba(236,72,153,0.22))",
+                      filter: "blur(18px)",
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+                  />
+                  <motion.div
+                    className="absolute -inset-6 rounded-full border border-white/[0.06] pointer-events-none"
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  >
+                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.7)]" />
+                    <span className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.7)]" />
+                    <span className="absolute -bottom-1.5 left-1/3 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_12px_rgba(139,92,246,0.7)]" />
+                  </motion.div>
+
+                  <Portrait3D />
+                </div>
               </AnimatedSection>
             </div>
           </div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 0.8 }}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          >
+            <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">Scroll</span>
+            <motion.a
+              href="#skills"
+              className="relative w-6 h-10 rounded-full border-2 border-zinc-700 flex justify-center pt-1.5 overflow-hidden"
+              whileHover={{ borderColor: 'rgba(236,72,153,0.6)' }}
+            >
+              <motion.span
+                className="w-1 h-2 rounded-full bg-gradient-to-b from-pink-500 to-cyan-400"
+                animate={{ y: [0, 18, 0], opacity: [1, 0.2, 1] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </motion.a>
+          </motion.div>
         </section>
 
         {/* Skills Section */}
@@ -883,6 +1441,220 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Certifications Section */}
+        <section id="certifications" className="py-24 px-6 bg-zinc-950 relative overflow-hidden">
+          <div className="absolute top-[-15%] right-[-10%] w-[30%] h-[45%] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[30%] h-[45%] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+          
+          <div className="max-w-6xl mx-auto relative">
+            <AnimatedSection>
+              <div className="flex items-center gap-4 mb-16">
+                <div className="w-12 h-1 bg-gradient-to-r from-pink-500 to-cyan-400 rounded-full"></div>
+                <div>
+                  <h2 className="text-4xl font-bold text-white flex items-center gap-3">
+                    Certifications
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-pink-500/20 to-cyan-500/20 border border-pink-500/30">
+                      <Award className="w-5 h-5 text-pink-400" />
+                    </span>
+                  </h2>
+                  <p className="text-zinc-400 mt-2 ml-0.5">Professional achievements and verified credentials</p>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {certifications.map((cert, index) => (
+                <AnimatedSection key={cert.title} delay={index * 0.08}>
+                  <Card3D>
+                    <motion.div 
+                      onClick={() => setSelectedCert(index)}
+                      className="group relative rounded-2xl overflow-hidden bg-zinc-950 border border-white/8 hover:border-pink-500/30 transition-all duration-500 h-full flex flex-col cursor-pointer"
+                      whileHover={{ y: -6 }}
+                    >
+                      <div className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${cert.color} border-b border-white/5`}>
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_50%)]" />
+                        
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 transition-opacity duration-300">
+                          <motion.img
+                            src={cert.image}
+                            alt={cert.title}
+                            className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                            onError={(e) => {
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.style.display = 'none';
+                              const fallback = target.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'flex';
+                            }}
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.6 }}
+                          />
+                          <div className="absolute inset-0 flex-col items-center justify-center p-6 hidden">
+                            <div className="w-20 h-20 rounded-2xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-4">
+                              <Award className="w-10 h-10 text-white/90" />
+                            </div>
+                            <p className="text-white/70 text-sm font-medium text-center">Drop your certificate photo here</p>
+                            <code className="mt-2 px-3 py-1 rounded-md bg-black/40 border border-white/10 text-[11px] text-white/50 font-mono">
+                              {cert.image.replace('/certifications/', '')}
+                            </code>
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-90" />
+                        
+                        <motion.div 
+                          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/80 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-100 scale-75"
+                        >
+                          <ZoomIn className="w-4 h-4" />
+                        </motion.div>
+
+                        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                          <motion.div 
+                            initial={{ x: -10, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.08 + 0.2 }}
+                            className="px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center gap-1.5 text-[11px] text-zinc-300 font-medium"
+                          >
+                            <Calendar className="w-3 h-3 text-pink-400" />
+                            {cert.date}
+                          </motion.div>
+                        </div>
+
+                        <motion.div
+                          className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400"
+                          initial={{ scaleX: 0, transformOrigin: 'left' }}
+                          whileHover={{ scaleX: 1 }}
+                          transition={{ duration: 0.5, ease: 'easeOut' }}
+                        />
+                      </div>
+                      
+                      <div className="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="text-lg font-bold mb-1.5 text-white group-hover:text-pink-300 transition-colors leading-tight">
+                            {cert.title}
+                          </h3>
+                          <p className="text-sm text-zinc-400 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                            {cert.issuer}
+                          </p>
+                        </div>
+
+                        <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
+                          <span className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold">
+                            View Credential
+                          </span>
+                          <motion.div
+                            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 group-hover:bg-pink-500/15 group-hover:border-pink-500/40 group-hover:text-pink-300 transition-all duration-300"
+                            whileHover={{ x: 2 }}
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </motion.div>
+                        </div>
+                      </div>
+                      
+                      <div className={`absolute inset-0 bg-gradient-to-t ${cert.color} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-500 pointer-events-none`}></div>
+                    </motion.div>
+                  </Card3D>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications Lightbox Modal */}
+        <AnimatePresence>
+          {selectedCert !== null && certifications[selectedCert] && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedCert(null)}
+                className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 md:p-10"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 30 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="fixed inset-4 md:inset-12 z-[101] pointer-events-none flex items-center justify-center"
+              >
+                <div className="w-full max-w-5xl max-h-full pointer-events-auto rounded-3xl overflow-hidden bg-zinc-950 border border-white/10 shadow-2xl flex flex-col">
+                  <div className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-white/8 bg-black/40 backdrop-blur-sm">
+                    <div className="min-w-0">
+                      <h3 className="text-base md:text-xl font-bold text-white truncate">
+                        {certifications[selectedCert].title}
+                      </h3>
+                      <p className="text-xs md:text-sm text-zinc-400 mt-0.5 truncate flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+                        {certifications[selectedCert].issuer}
+                        <span className="text-zinc-600">·</span>
+                        <Calendar className="w-3 h-3 text-pink-400 shrink-0" />
+                        {certifications[selectedCert].date}
+                      </p>
+                    </div>
+                    <motion.button
+                      onClick={() => setSelectedCert(null)}
+                      whileHover={{ scale: 1.08, rotate: 90 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="shrink-0 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                      aria-label="Close"
+                    >
+                      <X className="w-5 h-5" />
+                    </motion.button>
+                  </div>
+                  <div className="flex-1 overflow-auto bg-black/60 p-4 md:p-10">
+                    <div className={`relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] bg-gradient-to-br ${certifications[selectedCert].color}`}>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.15),transparent_60%)]" />
+                      <motion.img
+                        src={certifications[selectedCert].image}
+                        alt={certifications[selectedCert].title}
+                        className="absolute inset-0 w-full h-full object-contain p-2 md:p-6"
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          target.style.display = 'none';
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1, duration: 0.5 }}
+                      />
+                      <div className="absolute inset-0 flex-col items-center justify-center p-8 hidden">
+                        <div className="w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-6">
+                          <Award className="w-14 h-14 md:w-18 md:h-18 text-white/90" />
+                        </div>
+                        <h4 className="text-white/80 text-base md:text-xl font-semibold mb-3">Certificate preview placeholder</h4>
+                        <p className="text-zinc-400 text-sm mb-5 text-center max-w-md">
+                          Add your certificate image to the <span className="font-mono text-pink-300 bg-white/5 px-2 py-0.5 rounded">public/certifications/</span> folder
+                        </p>
+                        <code className="px-4 py-2 rounded-lg bg-black/50 border border-white/10 text-xs md:text-sm text-white/60 font-mono">
+                          {certifications[selectedCert].image.replace('/certifications/', '')}
+                        </code>
+                      </div>
+                    </div>
+                    {certifications[selectedCert].credentialUrl && (
+                      <div className="mt-6 flex justify-center">
+                        <motion.a
+                          href={certifications[selectedCert].credentialUrl!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-semibold shadow-lg shadow-pink-500/20 hover:shadow-pink-500/40 transition-shadow"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Verify Credential
+                        </motion.a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
 
         {/* Contact/Footer */}
         <section id="contact" className="py-20 px-6 border-t border-white/8 bg-zinc-950">
