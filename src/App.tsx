@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef, memo, type ReactNode } from 'react';
 import { 
   Code2, 
   Terminal, 
@@ -15,47 +15,44 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-// Inline SVG replacements for brand icons removed from lucide-react v1.x
-const Github = ({ className = '' }) => (
+// --- Inline SVG brand icons ---
+const Github = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
   </svg>
-);
+));
+Github.displayName = 'Github';
 
-const Linkedin = ({ className = '' }) => (
+const Linkedin = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
   </svg>
-);
+));
+Linkedin.displayName = 'Linkedin';
 
-const VFinance = ({ className = '' }) => (
+const VFinance = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 200 200">
     <defs>
       <linearGradient id="vfinanceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
         <stop offset="100%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
       </linearGradient>
-      <filter id="vfinaneShadow" x="-50%" y="-50%" width="200%" height="200%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.3" />
-      </filter>
     </defs>
-    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#vfinanceGradient)" filter="url(#vfinaneShadow)" />
+    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#vfinanceGradient)" />
     <text x="100" y="125" fontSize="100" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="system-ui, -apple-system, sans-serif">V</text>
   </svg>
-);
+));
+VFinance.displayName = 'VFinance';
 
-const IndustryEquipment = ({ className = '' }) => (
+const IndustryEquipment = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 200 200">
     <defs>
       <linearGradient id="equipmentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style={{ stopColor: '#3b82f6', stopOpacity: 1 }} />
         <stop offset="100%" style={{ stopColor: '#06b6d4', stopOpacity: 1 }} />
       </linearGradient>
-      <filter id="equipmentShadow" x="-50%" y="-50%" width="200%" height="200%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.3" />
-      </filter>
     </defs>
-    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#equipmentGradient)" filter="url(#equipmentShadow)" />
+    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#equipmentGradient)" />
     <g transform="translate(100, 100)">
       <circle cx="0" cy="0" r="35" fill="white" opacity="0.2" />
       <circle cx="0" cy="0" r="28" fill="none" stroke="white" strokeWidth="3" />
@@ -72,20 +69,18 @@ const IndustryEquipment = ({ className = '' }) => (
       <circle cx="0" cy="0" r="12" fill="white" />
     </g>
   </svg>
-);
+));
+IndustryEquipment.displayName = 'IndustryEquipment';
 
-const VoteSecurity = ({ className = '' }) => (
+const VoteSecurity = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 200 200">
     <defs>
       <linearGradient id="securityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style={{ stopColor: '#06b6d4', stopOpacity: 1 }} />
         <stop offset="100%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
       </linearGradient>
-      <filter id="securityShadow" x="-50%" y="-50%" width="200%" height="200%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.3" />
-      </filter>
     </defs>
-    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#securityGradient)" filter="url(#securityShadow)" />
+    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#securityGradient)" />
     <g transform="translate(100, 100)">
       <path d="M 0 -35 C -20 -25 -25 -10 -25 10 C -25 35 0 45 0 45 C 0 45 25 35 25 10 C 25 -10 20 -25 0 -35 Z" fill="white" opacity="0.95" />
       <g stroke="white" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -93,20 +88,18 @@ const VoteSecurity = ({ className = '' }) => (
       </g>
     </g>
   </svg>
-);
+));
+VoteSecurity.displayName = 'VoteSecurity';
 
-const CareerGuidance = ({ className = '' }) => (
+const CareerGuidance = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 200 200">
     <defs>
       <linearGradient id="careerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style={{ stopColor: '#f97316', stopOpacity: 1 }} />
         <stop offset="100%" style={{ stopColor: '#ec4899', stopOpacity: 1 }} />
       </linearGradient>
-      <filter id="careerShadow" x="-50%" y="-50%" width="200%" height="200%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.3" />
-      </filter>
     </defs>
-    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#careerGradient)" filter="url(#careerShadow)" />
+    <rect x="20" y="20" width="160" height="160" rx="40" fill="url(#careerGradient)" />
     <g transform="translate(100, 100)">
       <circle cx="0" cy="0" r="32" fill="none" stroke="white" strokeWidth="2.5" />
       <g stroke="white" strokeWidth="3" strokeLinecap="round">
@@ -119,10 +112,181 @@ const CareerGuidance = ({ className = '' }) => (
       <polyline points="0,0 16,-16" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none" />
     </g>
   </svg>
-);
+));
+CareerGuidance.displayName = 'CareerGuidance';
 
-// --- Count Up ---
-const CountUp = ({ to, className = '', duration = 1.6, delay = 0 }: { 
+// --- Static data (hoisted outside App to avoid re-creation every render) ---
+type Project = {
+  title: string;
+  description: string;
+  tags: string[];
+  color: string;
+  image?: string;
+  icon?: ReactNode;
+  highlight?: boolean;
+  githubUrl?: string;
+  websiteUrl?: string;
+};
+
+const PROJECTS: Project[] = [
+  {
+    title: "V Finance",
+    description: "A comprehensive financial management and tracking platform built to streamline transactions and user portfolios.",
+    tags: ["Java", "Web Technologies", "Database"],
+    color: "from-pink-500 to-purple-500",
+    icon: <VFinance className="w-12 h-12" />,
+    highlight: true,
+    githubUrl: "https://github.com/Prashwinachya/V-Finance.git",
+    websiteUrl: ""
+  },
+  {
+    title: "Industry Equipment System",
+    description: "An inventory and equipment tracking system designed for industrial applications to monitor machinery status and maintenance.",
+    tags: ["C Programming", "System Architecture", "UI/UX"],
+    color: "from-blue-500 to-cyan-500",
+    icon: <IndustryEquipment className="w-12 h-12" />,
+    githubUrl: "https://github.com/Prashwinachya/Industrial-Equipment-System.git",
+    websiteUrl: ""
+  },
+  {
+    title: "Vote Fraud Detection System",
+    description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
+    tags: ["Java", "Security", "Algorithms"],
+    color: "from-cyan-500 to-teal-500",
+    icon: <VoteSecurity className="w-12 h-12" />,
+    githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
+    websiteUrl: ""
+  },
+  {
+    title: "Career Guidance System",
+    description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
+    tags: ["Web Dev", "API Integration", "Database"],
+    color: "from-orange-500 to-pink-600",
+    icon: <CareerGuidance className="w-12 h-12" />,
+    highlight: true,
+    githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
+    websiteUrl: ""
+  },
+  {
+    title: "Vote Fraud Detection System",
+    description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
+    tags: ["Java", "Security", "Algorithms"],
+    color: "from-cyan-500 to-teal-500",
+    icon: <VoteSecurity className="w-12 h-12" />,
+    githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
+    websiteUrl: ""
+  },
+  {
+    title: "Career Guidance System",
+    description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
+    tags: ["Web Dev", "API Integration", "Database"],
+    color: "from-orange-500 to-pink-600",
+    icon: <CareerGuidance className="w-12 h-12" />,
+    highlight: true,
+    githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
+    websiteUrl: ""
+  }
+];
+
+const SKILLS = [
+  { name: "Java", icon: <Database className="w-6 h-6" />, level: 90 },
+  { name: "C Programming", icon: <Terminal className="w-6 h-6" />, level: 85 },
+  { name: "HTML & CSS", icon: <Monitor className="w-6 h-6" />, level: 95 },
+  { name: "JavaScript", icon: <Code2 className="w-6 h-6" />, level: 88 },
+  { name: "React", icon: <Code2 className="w-6 h-6" />, level: 80 },
+];
+
+type Certification = {
+  title: string;
+  issuer: string;
+  date: string;
+  image: string;
+  credentialUrl?: string;
+  color: string;
+};
+
+const CERTIFICATIONS: Certification[] = [
+  {
+    title: "Full Stack Web Development",
+    issuer: "Certification Authority",
+    date: "March 2025",
+    image: "/certifications/cert1.jpg",
+    credentialUrl: "",
+    color: "from-pink-500/40 to-purple-500/40",
+  },
+  {
+    title: "Java Programming Masterclass",
+    issuer: "Oracle University",
+    date: "January 2025",
+    image: "/certifications/cert2.jpg",
+    credentialUrl: "",
+    color: "from-blue-500/40 to-cyan-500/40",
+  },
+  {
+    title: "UI/UX Design Professional",
+    issuer: "Google Career Certificates",
+    date: "November 2024",
+    image: "/certifications/cert3.jpg",
+    credentialUrl: "",
+    color: "from-orange-500/40 to-pink-500/40",
+  },
+  {
+    title: "AI & Machine Learning Fundamentals",
+    issuer: "Coursera - Stanford",
+    date: "August 2024",
+    image: "/certifications/cert4.jpg",
+    credentialUrl: "",
+    color: "from-cyan-500/40 to-teal-500/40",
+  },
+  {
+    title: "Database Management System",
+    issuer: "Microsoft Learn",
+    date: "June 2024",
+    image: "/certifications/cert5.jpg",
+    credentialUrl: "",
+    color: "from-purple-500/40 to-indigo-500/40",
+  },
+  {
+    title: "Data Structures & Algorithms",
+    issuer: "Coding Platform",
+    date: "April 2024",
+    image: "/certifications/cert6.jpg",
+    credentialUrl: "",
+    color: "from-emerald-500/40 to-cyan-500/40",
+  },
+];
+
+const NAV_ITEMS = ['Home', 'Skills', 'Projects', 'Certifications', 'Contact'] as const;
+
+const ROLES = [
+  { text: "Web Developer", color: "from-pink-400 to-fuchsia-400", icon: <Code2 className="w-5 h-5" /> },
+  { text: "Vlogger", color: "from-red-400 to-pink-400", icon: <Monitor className="w-5 h-5" /> },
+  { text: "Graphic Designer", color: "from-purple-400 to-fuchsia-400", icon: <Terminal className="w-5 h-5" /> },
+  { text: "AI Tool Professional", color: "from-cyan-400 to-blue-400", icon: <Database className="w-5 h-5" /> },
+];
+
+const ROLE_CHIPS = [
+  { label: 'Web Developer', color: 'from-pink-500/20 to-purple-500/20 border-pink-500/30 text-pink-200', dot: 'bg-pink-400' },
+  { label: 'Vlogger', color: 'from-red-500/20 to-pink-500/20 border-red-500/30 text-red-200', dot: 'bg-red-400' },
+  { label: 'Graphic Designer', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-500/30 text-purple-200', dot: 'bg-purple-400' },
+  { label: 'AI Tool Pro', color: 'from-cyan-500/20 to-blue-500/20 border-cyan-500/30 text-cyan-200', dot: 'bg-cyan-400' },
+];
+
+const STATS = [
+  { label: 'Projects', value: 6, suffix: '+', icon: <Code2 className="w-3.5 h-3.5" />, color: 'text-pink-400' },
+  { label: 'Certs', value: 6, suffix: '+', icon: <Award className="w-3.5 h-3.5" />, color: 'text-purple-400' },
+  { label: 'Skills', value: 5, suffix: '+', icon: <Monitor className="w-3.5 h-3.5" />, color: 'text-cyan-400' },
+];
+
+const PORTRAIT_TAGS = [
+  { text: "Web Dev", x: -100, y: -80, delay: 0 },
+  { text: "Vlogger", x: 120, y: -60, delay: 0.3 },
+  { text: "Designer", x: 100, y: 100, delay: 0.6 },
+  { text: "AI Pro", x: -110, y: 80, delay: 0.9 },
+];
+
+// --- Count Up (memoized data reference via props) ---
+const CountUp = memo(({ to, className = '', duration = 1.6, delay = 0 }: { 
   to: number; 
   className?: string; 
   duration?: number;
@@ -130,6 +294,7 @@ const CountUp = ({ to, className = '', duration = 1.6, delay = 0 }: {
 }) => {
   const [display, setDisplay] = useState(0);
   const startedRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -140,83 +305,89 @@ const CountUp = ({ to, className = '', duration = 1.6, delay = 0 }: {
         startedRef.current = true;
         const startTime = performance.now() + delay * 1000;
         const tick = (now: number) => {
-          if (now < startTime) { requestAnimationFrame(tick); return; }
+          if (now < startTime) { frameRef.current = requestAnimationFrame(tick); return; }
           const t = Math.min(1, (now - startTime) / (duration * 1000));
           const eased = 1 - Math.pow(1 - t, 3);
           setDisplay(Math.round(eased * to));
-          if (t < 1) requestAnimationFrame(tick);
+          if (t < 1) frameRef.current = requestAnimationFrame(tick);
         };
-        requestAnimationFrame(tick);
+        frameRef.current = requestAnimationFrame(tick);
       }
     }, { threshold: 0.2 });
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
   }, [to, duration, delay]);
 
   return <span ref={ref} className={className}>{display}</span>;
-};
+});
+CountUp.displayName = 'CountUp';
 
-// --- Role Carousel ---
-const RoleCarousel = () => {
-  const roles = [
-    { text: "Web Developer", color: "from-pink-400 to-fuchsia-400", icon: <Code2 className="w-5 h-5" /> },
-    { text: "Vlogger", color: "from-red-400 to-pink-400", icon: <Monitor className="w-5 h-5" /> },
-    { text: "Graphic Designer", color: "from-purple-400 to-fuchsia-400", icon: <Terminal className="w-5 h-5" /> },
-    { text: "AI Tool Professional", color: "from-cyan-400 to-blue-400", icon: <Database className="w-5 h-5" /> },
-  ];
+// --- Role Carousel (FIXED: single AnimatePresence, not inside map) ---
+const RoleCarousel = memo(() => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((p) => (p + 1) % roles.length), 3000);
+    const t = setInterval(() => setIdx((p) => (p + 1) % ROLES.length), 3000);
     return () => clearInterval(t);
-  }, [roles.length]);
+  }, []);
 
+  const r = ROLES[idx];
   return (
     <div className="mt-5 flex items-center justify-center lg:justify-start gap-3 min-h-[2.25rem]">
       <span className="text-lg md:text-xl text-zinc-400 font-medium hidden sm:inline">Crafting as</span>
       <span className="inline-flex items-center gap-3 bg-white/[0.025] border border-white/10 rounded-full px-5 py-2 overflow-hidden">
-        {roles.map((r, i) => (
-          <AnimatePresence mode="wait" key={i}>
-            {i === idx && (
-              <motion.div
-                initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -18, filter: 'blur(8px)' }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center gap-2"
-              >
-                <span className={`bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
-                  {r.icon}
-                </span>
-                <span className={`text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
-                  {r.text}
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        ))}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -18, filter: 'blur(8px)' }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-2"
+          >
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
+              {r.icon}
+            </span>
+            <span className={`text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${r.color}`}>
+              {r.text}
+            </span>
+          </motion.div>
+        </AnimatePresence>
       </span>
     </div>
   );
-};
+});
+RoleCarousel.displayName = 'RoleCarousel';
 
-// --- Custom Cursor ---
-const CustomCursor = () => {
+// --- Custom Cursor (optimized: passive listener, softer springs) ---
+const CustomCursor = memo(() => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const springConfig = { damping: 25, stiffness: 600 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  const cursorXSpring = useSpring(cursorX, { damping: 40, stiffness: 300, mass: 0.6 });
+  const cursorYSpring = useSpring(cursorY, { damping: 40, stiffness: 300, mass: 0.6 });
 
   useEffect(() => {
+    let raf = 0;
+    let lastX = -100;
+    let lastY = -100;
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
+      lastX = e.clientX - 16;
+      lastY = e.clientY - 16;
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          cursorX.set(lastX);
+          cursorY.set(lastY);
+          raf = 0;
+        });
+      }
     };
-
-    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mousemove", moveCursor, { passive: true });
     return () => {
       window.removeEventListener("mousemove", moveCursor);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [cursorX, cursorY]);
 
@@ -224,35 +395,30 @@ const CustomCursor = () => {
     <>
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-pink-500 pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-        }}
+        style={{ x: cursorXSpring, y: cursorYSpring, willChange: 'transform' }}
       />
       <motion.div
         className="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyan-400 pointer-events-none z-[9999] mix-blend-difference"
-        style={{
-          x: cursorX,
-          y: cursorY,
-        }}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        style={{ x: cursorX, y: cursorY, willChange: 'transform' }}
       />
     </>
   );
-};
+});
+CustomCursor.displayName = 'CustomCursor';
 
 // --- Magnetic Button ---
-const MagneticButton = ({ children, className = '', href, target, rel }: { 
+const MagneticButton = memo(({ children, className = '', href, target, rel, onClick }: { 
   children: ReactNode; 
   className?: string; 
   href?: string;
   target?: string;
   rel?: string;
+  onClick?: () => void;
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const ref = useRef<HTMLAnchorElement>(null);
+  let raf = 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!ref.current) return;
@@ -263,8 +429,15 @@ const MagneticButton = ({ children, className = '', href, target, rel }: {
     const mouseY = e.clientY - rect.top;
     const xPct = (mouseX / width - 0.5) * 2;
     const yPct = (mouseY / height - 0.5) * 2;
-    x.set(xPct * 20);
-    y.set(yPct * 20);
+    const nx = xPct * 20;
+    const ny = yPct * 20;
+    if (!raf) {
+      raf = requestAnimationFrame(() => {
+        x.set(nx);
+        y.set(ny);
+        raf = 0;
+      });
+    }
   };
 
   const handleMouseLeave = () => {
@@ -279,34 +452,40 @@ const MagneticButton = ({ children, className = '', href, target, rel }: {
       className={className}
       target={target}
       rel={rel}
+      onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ x, y }}
+      style={{ x, y, willChange: 'transform' }}
     >
       {children}
     </motion.a>
   );
-};
+});
+MagneticButton.displayName = 'MagneticButton';
 
 // --- 3D Card ---
-const Card3D = ({ children, className = '' }: { children: ReactNode; className?: string; highlight?: boolean }) => {
+const Card3D = memo(({ children, className = '' }: { children: ReactNode; className?: string; highlight?: boolean }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const rotateX = useTransform(y, [-100, 100], [15, -15]);
   const rotateY = useTransform(x, [-100, 100], [-15, 15]);
-
   const ref = useRef<HTMLDivElement>(null);
+  let raf = 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX - centerX);
-    y.set(mouseY - centerY);
+    const nx = e.clientX - rect.left - centerX;
+    const ny = e.clientY - rect.top - centerY;
+    if (!raf) {
+      raf = requestAnimationFrame(() => {
+        x.set(nx);
+        y.set(ny);
+        raf = 0;
+      });
+    }
   };
 
   const handleMouseLeave = () => {
@@ -317,11 +496,7 @@ const Card3D = ({ children, className = '' }: { children: ReactNode; className?:
   return (
     <motion.div
       ref={ref}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d", willChange: 'transform' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={className}
@@ -329,10 +504,11 @@ const Card3D = ({ children, className = '' }: { children: ReactNode; className?:
       <div style={{ transform: "translateZ(20px)" }}>{children}</div>
     </motion.div>
   );
-};
+});
+Card3D.displayName = 'Card3D';
 
 // --- Animated Section Wrapper ---
-const AnimatedSection = ({
+const AnimatedSection = memo(({
   children,
   className = '',
   delay = 0
@@ -352,123 +528,110 @@ const AnimatedSection = ({
       {children}
     </motion.div>
   );
-};
+});
+AnimatedSection.displayName = 'AnimatedSection';
 
-// --- Floating Shapes ---
-const FloatingShapes = () => {
+// --- Floating Shapes (REDUCED: 11 -> 4 elements, lower complexity) ---
+const FloatingShapes = memo(() => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Animated circles - reduced for performance */}
-      {[...Array(4)].map((_, i) => (
+      {[...Array(2)].map((_, i) => (
         <motion.div
-          key={`circle-${i}`}
-          className="absolute rounded-full border-2 border-pink-500/20"
+          key={`ring-${i}`}
+          className="absolute rounded-full border border-pink-500/15"
           style={{
-            width: 100 + i * 80,
-            height: 100 + i * 80,
-            left: `${10 + i * 20}%`,
-            top: `${20 + i * 15}%`,
+            width: 140 + i * 140,
+            height: 140 + i * 140,
+            left: `${15 + i * 25}%`,
+            top: `${25 + i * 20}%`,
             willChange: "transform, opacity",
           }}
           animate={{
-            scale: [1, 1.15, 1],
-            rotate: [0, 45, 0],
-            opacity: [0.1, 0.25, 0.1],
+            scale: [1, 1.1, 1],
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
-            duration: 8 + i * 1,
+            duration: 12 + i * 2,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.4,
+            delay: i * 0.6,
           }}
         />
       ))}
       
-      {/* Animated hexagons - reduced for performance */}
-      {[...Array(3)].map((_, i) => (
-        <motion.div
-          key={`hex-${i}`}
-          className="absolute text-cyan-400/20"
-          style={{
-            left: `${10 + i * 35}%`,
-            top: `${20 + i * 25}%`,
-            fontSize: `${40 + i * 25}px`,
-            willChange: "transform, opacity",
-          }}
-          animate={{
-            y: [0, -25, 0],
-            rotate: [0, 180, 360],
-            opacity: [0.1, 0.35, 0.1],
-          }}
-          transition={{
-            duration: 10 + i * 1.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 1,
-          }}
-        >
-          ⬡
-        </motion.div>
-      ))}
+      <motion.div
+        className="absolute text-cyan-400/20"
+        style={{
+          left: `65%`,
+          top: `35%`,
+          fontSize: `60px`,
+          willChange: "transform, opacity",
+        }}
+        animate={{
+          y: [0, -20, 0],
+          rotate: [0, 180, 360],
+          opacity: [0.08, 0.25, 0.08],
+        }}
+        transition={{
+          duration: 16,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        ⬡
+      </motion.div>
 
-      {/* Floating lines - reduced for performance */}
-      {[...Array(4)].map((_, i) => (
-        <motion.div
-          key={`line-${i}`}
-          className="absolute h-0.5 bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"
-          style={{
-            width: `${200 + i * 100}px`,
-            left: `${i * 20}%`,
-            top: `${30 + i * 18}%`,
-            willChange: "transform, opacity",
-          }}
-          animate={{
-            x: [0, 80, 0],
-            opacity: [0, 0.4, 0],
-          }}
-          transition={{
-            duration: 9 + i * 1,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 0.7,
-          }}
-        />
-      ))}
+      <motion.div
+        className="absolute h-0.5 bg-gradient-to-r from-transparent via-pink-500/25 to-transparent"
+        style={{
+          width: `320px`,
+          left: `15%`,
+          top: `55%`,
+          willChange: "transform, opacity",
+        }}
+        animate={{
+          x: [0, 60, 0],
+          opacity: [0, 0.3, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
     </div>
   );
-};
+});
+FloatingShapes.displayName = 'FloatingShapes';
 
-// --- 3D Portrait Component ---
-const Portrait3D = () => {
+// --- 3D Portrait (optimized: removed scan-line, image breathing loop, and blurred halo) ---
+const Portrait3D = memo(() => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const rotateX = useTransform(y, [-200, 200], [10, -10]);
   const rotateY = useTransform(x, [-200, 200], [-10, 10]);
-  const scale = useSpring(1, { stiffness: 300, damping: 30 });
-
+  const scale = useSpring(1, { stiffness: 250, damping: 28 });
   const ref = useRef<HTMLDivElement>(null);
+  let raf = 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX - centerX);
-    y.set(mouseY - centerY);
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const nx = e.clientX - rect.left - cx;
+    const ny = e.clientY - rect.top - cy;
+    if (!raf) {
+      raf = requestAnimationFrame(() => {
+        x.set(nx);
+        y.set(ny);
+        raf = 0;
+      });
+    }
   };
 
-  const handleMouseEnter = () => {
-    scale.set(1.05);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    scale.set(1);
-  };
+  const handleMouseEnter = () => { scale.set(1.05); };
+  const handleMouseLeave = () => { x.set(0); y.set(0); scale.set(1); };
 
   return (
     <motion.div
@@ -476,63 +639,38 @@ const Portrait3D = () => {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        scale,
-        transformStyle: "preserve-3d",
-      }}
+      style={{ rotateX, rotateY, scale, transformStyle: "preserve-3d", willChange: 'transform' }}
       className="relative"
     >
-      {/* Outer glow ring */}
       <motion.div
         className="absolute -inset-4 rounded-full"
         style={{
           background: "conic-gradient(from 0deg, #ec4899, #8b5cf6, #06b6d4, #ec4899)",
-          filter: "blur(20px)",
+          filter: "blur(22px)",
+          opacity: 0.55,
+          willChange: "transform",
         }}
         animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Main portrait container */}
       <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/20 backdrop-blur-sm">
-        {/* Background image with 3D effect */}
-        <motion.img
+        <img
           src="/PRASHWIN.jpg"
           alt="Prashwin PJ"
           className="w-full h-full object-cover"
           style={{ transform: "translateZ(30px)" }}
           decoding="async"
           fetchPriority="high"
-          animate={{ scale: [1, 1.02, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
-
-        {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
-        
-        {/* Scan line effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/3 to-transparent"
-          animate={{ y: ["0%", "100%"] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-        />
-
-        {/* Grid overlay */}
         <div className="absolute inset-0" style={{
           backgroundImage: "linear-gradient(rgba(236,72,153,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(236,72,153,0.03) 1px, transparent 1px)",
           backgroundSize: "30px 30px",
         }} />
       </div>
 
-      {/* Floating tags around portrait */}
-      {[
-        { text: "Web Dev", x: -100, y: -80, delay: 0 },
-        { text: "Vlogger", x: 120, y: -60, delay: 0.3 },
-        { text: "Designer", x: 100, y: 100, delay: 0.6 },
-        { text: "AI Pro", x: -110, y: 80, delay: 0.9 },
-      ].map((tag, i) => (
+      {PORTRAIT_TAGS.map((tag, i) => (
         <motion.div
           key={i}
           className="absolute px-4 py-2 bg-black/70 backdrop-blur-md rounded-full border border-pink-500/30 text-white text-sm font-semibold"
@@ -553,10 +691,11 @@ const Portrait3D = () => {
       ))}
     </motion.div>
   );
-};
+});
+Portrait3D.displayName = 'Portrait3D';
 
 // --- Magnetic Nav Link ---
-const MagneticNavLink = ({ 
+const MagneticNavLink = memo(({ 
   children, 
   className = '', 
   href, 
@@ -571,26 +710,26 @@ const MagneticNavLink = ({
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
   const ref = useRef<HTMLAnchorElement>(null);
+  let raf = 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = (mouseX / width - 0.5) * 2;
-    const yPct = (mouseY / height - 0.5) * 2;
-    x.set(xPct * 12);
-    y.set(yPct * 12);
+    const nx = ((e.clientX - rect.left) / width - 0.5) * 2 * 12;
+    const ny = ((e.clientY - rect.top) / height - 0.5) * 2 * 12;
+    if (!raf) {
+      raf = requestAnimationFrame(() => {
+        x.set(nx);
+        y.set(ny);
+        raf = 0;
+      });
+    }
   };
 
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
 
   return (
     <motion.a
@@ -600,13 +739,13 @@ const MagneticNavLink = ({
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ x, y }}
+      style={{ x, y, willChange: 'transform' }}
       whileHover={{ color: '#ffffff' }}
     >
       <span className="relative inline-block">
         {children}
         <motion.span
-          className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400`}
+          className="absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400"
           initial={{ width: 0 }}
           animate={{ width: isActive ? '100%' : 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -614,7 +753,8 @@ const MagneticNavLink = ({
       </span>
     </motion.a>
   );
-};
+});
+MagneticNavLink.displayName = 'MagneticNavLink';
 
 // --- Main Application ---
 export default function App() {
@@ -623,206 +763,96 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [selectedCert, setSelectedCert] = useState<number | null>(null);
 
+  // --- Resize detection (throttled via rAF) ---
   useEffect(() => {
+    let raf = 0;
     const checkDesktop = () => {
-      setIsDesktop(window.matchMedia('(pointer: fine) and (min-width: 768px)').matches);
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          setIsDesktop(window.matchMedia('(pointer: fine) and (min-width: 768px)').matches);
+          raf = 0;
+        });
+      }
     };
     checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
+    window.addEventListener('resize', checkDesktop, { passive: true });
+    return () => {
+      window.removeEventListener('resize', checkDesktop);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
+  // --- Scroll handler: rAF batched, only setState when values actually differ ---
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolledPct = height > 0 ? (winScroll / height) * 100 : 0;
-      setScrollProgress(scrolledPct);
+    let ticking = false;
+    let lastScrolled = false;
+    let lastProgress = -1;
+    let lastActive = 'home';
+    const sections = NAV_ITEMS.map(i => i.toLowerCase());
 
-      const sections = ['home', 'skills', 'projects', 'certifications', 'contact'];
-      let current = 'home';
-      for (const section of sections) {
-        const el = document.getElementById(section);
+    const update = () => {
+      const y = window.scrollY;
+      const newScrolled = y > 20;
+      if (newScrolled !== lastScrolled) {
+        lastScrolled = newScrolled;
+        setScrolled(newScrolled);
+      }
+
+      const doc = document.documentElement;
+      const h = doc.scrollHeight - doc.clientHeight;
+      const pct = h > 0 ? Math.round(((y || document.body.scrollTop) / h) * 100) : 0;
+      if (pct !== lastProgress) {
+        lastProgress = pct;
+        setScrollProgress(pct);
+      }
+
+      let cur = 'home';
+      for (const s of sections) {
+        const el = document.getElementById(s);
         if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 150) {
-            current = section;
-          }
+          const r = el.getBoundingClientRect();
+          if (r.top <= 150) cur = s;
         }
       }
-      setActiveSection(current);
+      if (cur !== lastActive) {
+        lastActive = cur;
+        setActiveSection(cur);
+      }
+      ticking = false;
     };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const projects: Array<{
-    title: string;
-    description: string;
-    tags: string[];
-    color: string;
-    image?: string;
-    icon?: ReactNode;
-    highlight?: boolean;
-    githubUrl?: string;
-    websiteUrl?: string;
-  }> = [
-    {
-      title: "V Finance",
-      description: "A comprehensive financial management and tracking platform built to streamline transactions and user portfolios.",
-      tags: ["Java", "Web Technologies", "Database"],
-      color: "from-pink-500 to-purple-500",
-      icon: <VFinance className="w-12 h-12" />,
-      highlight: true,
-      githubUrl: "https://github.com/Prashwinachya/V-Finance.git",
-      websiteUrl: ""
-    },
-    {
-      title: "Industry Equipment System",
-      description: "An inventory and equipment tracking system designed for industrial applications to monitor machinery status and maintenance.",
-      tags: ["C Programming", "System Architecture", "UI/UX"],
-      color: "from-blue-500 to-cyan-500",
-      icon: <IndustryEquipment className="w-12 h-12" />,
-      githubUrl: "https://github.com/Prashwinachya/Industrial-Equipment-System.git",
-      websiteUrl: ""
-    },
-    {
-      title: "Vote Fraud Detection System",
-      description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
-      tags: ["Java", "Security", "Algorithms"],
-      color: "from-cyan-500 to-teal-500",
-      icon: <VoteSecurity className="w-12 h-12" />,
-      githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
-      websiteUrl: ""
-    },
-    {
-      title: "Career Guidance System",
-      description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
-      tags: ["Web Dev", "API Integration", "Database"],
-      color: "from-orange-500 to-pink-600",
-      icon: <CareerGuidance className="w-12 h-12" />,
-      highlight: true,
-      githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
-      websiteUrl: ""
-    },
-    {
-      title: "Vote Fraud Detection System",
-      description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
-      tags: ["Java", "Security", "Algorithms"],
-      color: "from-cyan-500 to-teal-500",
-      icon: <VoteSecurity className="w-12 h-12" />,
-      githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
-      websiteUrl: ""
-    },
-    {
-      title: "Career Guidance System",
-      description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
-      tags: ["Web Dev", "API Integration", "Database"],
-      color: "from-orange-500 to-pink-600",
-      icon: <CareerGuidance className="w-12 h-12" />,
-      highlight: true,
-      githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
-      websiteUrl: ""
-    }
-  ];
-
-  const skills = [
-    { name: "Java", icon: <Database className="w-6 h-6" />, level: 90 },
-    { name: "C Programming", icon: <Terminal className="w-6 h-6" />, level: 85 },
-    { name: "HTML & CSS", icon: <Monitor className="w-6 h-6" />, level: 95 },
-    { name: "JavaScript", icon: <Code2 className="w-6 h-6" />, level: 88 },
-    { name: "React", icon: <Code2 className="w-6 h-6" />, level: 80 },
-  ];
-
-  const certifications: Array<{
-    title: string;
-    issuer: string;
-    date: string;
-    image: string;
-    credentialUrl?: string;
-    color: string;
-  }> = [
-    {
-      title: "Full Stack Web Development",
-      issuer: "Certification Authority",
-      date: "March 2025",
-      image: "/certifications/cert1.jpg",
-      credentialUrl: "",
-      color: "from-pink-500/40 to-purple-500/40",
-    },
-    {
-      title: "Java Programming Masterclass",
-      issuer: "Oracle University",
-      date: "January 2025",
-      image: "/certifications/cert2.jpg",
-      credentialUrl: "",
-      color: "from-blue-500/40 to-cyan-500/40",
-    },
-    {
-      title: "UI/UX Design Professional",
-      issuer: "Google Career Certificates",
-      date: "November 2024",
-      image: "/certifications/cert3.jpg",
-      credentialUrl: "",
-      color: "from-orange-500/40 to-pink-500/40",
-    },
-    {
-      title: "AI & Machine Learning Fundamentals",
-      issuer: "Coursera - Stanford",
-      date: "August 2024",
-      image: "/certifications/cert4.jpg",
-      credentialUrl: "",
-      color: "from-cyan-500/40 to-teal-500/40",
-    },
-    {
-      title: "Database Management System",
-      issuer: "Microsoft Learn",
-      date: "June 2024",
-      image: "/certifications/cert5.jpg",
-      credentialUrl: "",
-      color: "from-purple-500/40 to-indigo-500/40",
-    },
-    {
-      title: "Data Structures & Algorithms",
-      issuer: "Coding Platform",
-      date: "April 2024",
-      image: "/certifications/cert6.jpg",
-      credentialUrl: "",
-      color: "from-emerald-500/40 to-cyan-500/40",
-    },
-  ];
-
-  const [selectedCert, setSelectedCert] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-pink-500/30 overflow-x-hidden">
       
-      {/* Custom Cursor - only on desktop */}
       {isDesktop && <CustomCursor />}
       
-      {/* Dynamic Background Animation */}
+      {/* Global ambient blobs - GPU promoted */}
       <div className="fixed inset-0 z-0 opacity-15 pointer-events-none">
         <motion.div 
           className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] rounded-full bg-pink-500 blur-[120px]"
           style={{ willChange: "transform" }}
-          animate={{
-            x: [0, 80, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
           className="absolute bottom-[-10%] right-[-10%] w-[35%] h-[35%] rounded-full bg-cyan-500 blur-[120px]"
           style={{ willChange: "transform" }}
-          animate={{
-            x: [0, -80, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
+          transition={{ duration: 34, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 
@@ -839,7 +869,7 @@ export default function App() {
       >
         <motion.div 
           className="h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 origin-left"
-          style={{ scaleX: scrollProgress / 100 }}
+          style={{ scaleX: scrollProgress / 100, willChange: 'transform' }}
         />
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <motion.a 
@@ -856,7 +886,7 @@ export default function App() {
 
           <div className="hidden md:flex items-center gap-2">
             <div className="flex items-center gap-1 mr-4 px-1.5 py-1 rounded-full bg-white/[0.03] border border-white/5">
-              {['Home', 'Skills', 'Projects', 'Certifications', 'Contact'].map((item, i) => (
+              {NAV_ITEMS.map((item, i) => (
                 <motion.div
                   key={item}
                   initial={{ opacity: 0, y: -15 }}
@@ -876,9 +906,9 @@ export default function App() {
 
             <div className="flex items-center gap-1.5">
               {[
-                { icon: <Github className="w-4 h-4" />, href: "https://github.com/Prashwinachya", label: "GitHub" },
-                { icon: <Linkedin className="w-4 h-4" />, href: "https://www.linkedin.com/in/prashwinpj/", label: "LinkedIn" },
-                { icon: <Mail className="w-4 h-4" />, href: "mailto:prashwinpvt12@gmail.com", label: "Email" },
+                { icon: <Github className="w-4 h-4" />, href: "https://github.com/Prashwinachya", label: "GitHub" as const },
+                { icon: <Linkedin className="w-4 h-4" />, href: "https://www.linkedin.com/in/prashwinpj/", label: "LinkedIn" as const },
+                { icon: <Mail className="w-4 h-4" />, href: "mailto:prashwinpvt12@gmail.com", label: "Email" as const },
               ].map((social, i) => (
                 <motion.a
                   key={social.label}
@@ -933,7 +963,7 @@ export default function App() {
               className="md:hidden overflow-hidden border-t border-white/5 bg-black/95 backdrop-blur-xl"
             >
               <div className="px-6 py-6 space-y-2">
-                {['Home', 'Skills', 'Projects', 'Certifications', 'Contact'].map((item, i) => (
+                {NAV_ITEMS.map((item, i) => (
                   <motion.a
                     key={item}
                     href={`#${item.toLowerCase()}`}
@@ -992,19 +1022,16 @@ export default function App() {
 
       <main className="relative z-10">
         
-        {/* Hero Section - Innovative Design */}
+        {/* Hero */}
         <section 
           id="home" 
           className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-16 px-6 overflow-hidden bg-black"
         >
-          {/* Background elements */}
           {isDesktop && <FloatingShapes />}
 
-          {/* Extra ambient blobs for hero */}
           <div className="absolute top-[20%] left-[5%] w-72 h-72 rounded-full bg-pink-600/[0.07] blur-[100px] pointer-events-none" />
           <div className="absolute bottom-[15%] right-[8%] w-80 h-80 rounded-full bg-cyan-500/[0.06] blur-[120px] pointer-events-none" />
 
-          {/* Grid scanlines overlay */}
           <div 
             className="absolute inset-0 pointer-events-none opacity-[0.04]"
             style={{
@@ -1017,7 +1044,6 @@ export default function App() {
           
           <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             
-            {/* Left: Text Content */}
             <div className="flex-1 space-y-7 text-center lg:text-left w-full">
               <AnimatedSection>
                 <motion.div
@@ -1033,17 +1059,6 @@ export default function App() {
                       <span className="relative inline-flex rounded-full w-2 h-2 bg-gradient-to-r from-pink-500 to-cyan-400" />
                     </span>
                     Welcome to my portfolio
-                    <motion.span
-                      className="absolute inset-0 rounded-full pointer-events-none"
-                      animate={{
-                        boxShadow: [
-                          '0 0 0 0 rgba(236,72,153,0)',
-                          '0 0 0 8px rgba(236,72,153,0.04)',
-                          '0 0 0 0 rgba(236,72,153,0)',
-                        ],
-                      }}
-                      transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-                    />
                   </span>
                 </motion.div>
                 
@@ -1065,8 +1080,8 @@ export default function App() {
                     <motion.span 
                       className="relative bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-fuchsia-400 to-cyan-300"
                       animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-                      transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ backgroundSize: '220% 220%' }}
+                      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ backgroundSize: '220% 220%', willChange: 'background-position' }}
                     >
                       Prashwin PJ
                     </motion.span>
@@ -1075,10 +1090,8 @@ export default function App() {
               </AnimatedSection>
 
               <AnimatedSection delay={0.3}>
-                {/* Rotating role headline */}
                 <RoleCarousel />
 
-                {/* Role chip cloud */}
                 <motion.div 
                   className="mt-7 flex flex-wrap gap-2.5 justify-center lg:justify-start"
                   initial={{ opacity: 0, y: 15 }}
@@ -1086,12 +1099,7 @@ export default function App() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.5 }}
                 >
-                  {[
-                    { label: 'Web Developer', color: 'from-pink-500/20 to-purple-500/20 border-pink-500/30 text-pink-200', dot: 'bg-pink-400' },
-                    { label: 'Vlogger', color: 'from-red-500/20 to-pink-500/20 border-red-500/30 text-red-200', dot: 'bg-red-400' },
-                    { label: 'Graphic Designer', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-500/30 text-purple-200', dot: 'bg-purple-400' },
-                    { label: 'AI Tool Pro', color: 'from-cyan-500/20 to-blue-500/20 border-cyan-500/30 text-cyan-200', dot: 'bg-cyan-400' },
-                  ].map((chip, i) => (
+                  {ROLE_CHIPS.map((chip, i) => (
                     <motion.span
                       key={chip.label}
                       initial={{ opacity: 0, scale: 0.85, y: 10 }}
@@ -1121,14 +1129,9 @@ export default function App() {
                 </motion.p>
               </AnimatedSection>
 
-              {/* Stats row */}
               <AnimatedSection delay={0.4}>
                 <div className="mt-3 grid grid-cols-3 gap-3 md:gap-5 max-w-lg mx-auto lg:mx-0">
-                  {[
-                    { label: 'Projects', value: 6, suffix: '+', icon: <Code2 className="w-3.5 h-3.5" />, color: 'text-pink-400' },
-                    { label: 'Certs', value: 6, suffix: '+', icon: <Award className="w-3.5 h-3.5" />, color: 'text-purple-400' },
-                    { label: 'Skills', value: 5, suffix: '+', icon: <Monitor className="w-3.5 h-3.5" />, color: 'text-cyan-400' },
-                  ].map((stat, i) => (
+                  {STATS.map((stat, i) => (
                     <motion.div
                       key={stat.label}
                       initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -1170,7 +1173,7 @@ export default function App() {
                       <motion.span
                         className="inline-flex w-6 h-6 rounded-full bg-black text-white items-center justify-center"
                         animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                       >
                         <ChevronRight className="w-3.5 h-3.5" />
                       </motion.span>
@@ -1218,24 +1221,15 @@ export default function App() {
               </AnimatedSection>
             </div>
 
-            {/* Right: 3D Portrait with floating orbiting badges */}
+            {/* Right: Portrait (removed blurred outer conic halo, kept single orbit ring) */}
             <div className="flex-1 flex justify-center w-full -mt-2 md:-mt-6 lg:-mt-10">
               <AnimatedSection delay={0.4}>
                 <div className="relative -translate-y-2 md:-translate-y-4 lg:-translate-y-6">
-                  {/* Large rotating conic ring outside */}
-                  <motion.div
-                    className="absolute -inset-10 rounded-full pointer-events-none opacity-60"
-                    style={{
-                      background: "conic-gradient(from 0deg, rgba(236,72,153,0.22), rgba(139,92,246,0.18), rgba(6,182,212,0.22), rgba(236,72,153,0.22))",
-                      filter: "blur(18px)",
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-                  />
                   <motion.div
                     className="absolute -inset-6 rounded-full border border-white/[0.06] pointer-events-none"
                     animate={{ rotate: -360 }}
-                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                    style={{ willChange: 'transform' }}
+                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
                   >
                     <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-pink-500 shadow-[0_0_15px_rgba(236,72,153,0.7)]" />
                     <span className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.7)]" />
@@ -1264,13 +1258,13 @@ export default function App() {
               <motion.span
                 className="w-1 h-2 rounded-full bg-gradient-to-b from-pink-500 to-cyan-400"
                 animate={{ y: [0, 18, 0], opacity: [1, 0.2, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
               />
             </motion.a>
           </motion.div>
         </section>
 
-        {/* Skills Section */}
+        {/* Skills */}
         <section id="skills" className="py-24 px-6 bg-zinc-950">
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
@@ -1281,7 +1275,7 @@ export default function App() {
             </AnimatedSection>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {skills.map((skill, index) => (
+              {SKILLS.map((skill, index) => (
                 <AnimatedSection key={skill.name} delay={index * 0.1}>
                   <motion.div 
                     whileHover={{ y: -10, scale: 1.02 }}
@@ -1312,7 +1306,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Projects Section */}
+        {/* Projects */}
         <section id="projects" className="py-24 px-6 bg-black">
           <div className="max-w-6xl mx-auto">
             <AnimatedSection>
@@ -1323,8 +1317,8 @@ export default function App() {
             </AnimatedSection>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {projects.map((project, index) => (
-                <AnimatedSection key={project.title} delay={index * 0.15}>
+              {PROJECTS.map((project, index) => (
+                <AnimatedSection key={`${project.title}-${index}`} delay={index * 0.15}>
                   <Card3D highlight={project.highlight}>
                     <div className={`group relative rounded-2xl overflow-hidden bg-zinc-950 border ${project.highlight ? 'border-pink-500/40 hover:border-pink-400/80 shadow-[0_0_30px_rgba(236,72,153,0.08)]' : 'border-white/8 hover:border-white/20'} transition-all duration-500 h-full flex flex-col`}>
                       
@@ -1403,11 +1397,7 @@ export default function App() {
                             href={project.githubUrl || undefined}
                             target={project.githubUrl ? '_blank' : undefined}
                             rel={project.githubUrl ? 'noopener noreferrer' : undefined}
-                            onClick={(e) => {
-                              if (!project.githubUrl) {
-                                e.preventDefault();
-                              }
-                            }}
+                            onClick={(e) => { if (!project.githubUrl) e.preventDefault(); }}
                             whileHover={project.githubUrl ? { scale: 1.03, y: -2 } : undefined}
                             className={`inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-sm font-medium transition-all ${project.githubUrl ? 'border-pink-500/40 bg-pink-500/10 text-pink-300 hover:bg-pink-500/20' : 'border-white/10 bg-white/5 text-zinc-500 cursor-not-allowed'}`}
                           >
@@ -1419,11 +1409,7 @@ export default function App() {
                             href={project.websiteUrl || undefined}
                             target={project.websiteUrl ? '_blank' : undefined}
                             rel={project.websiteUrl ? 'noopener noreferrer' : undefined}
-                            onClick={(e) => {
-                              if (!project.websiteUrl) {
-                                e.preventDefault();
-                              }
-                            }}
+                            onClick={(e) => { if (!project.websiteUrl) e.preventDefault(); }}
                             whileHover={project.websiteUrl ? { scale: 1.03, y: -2 } : undefined}
                             className={`inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full border text-sm font-medium transition-all ${project.websiteUrl ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20' : 'border-white/10 bg-white/5 text-zinc-500 cursor-not-allowed'}`}
                           >
@@ -1442,7 +1428,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Certifications Section */}
+        {/* Certifications */}
         <section id="certifications" className="py-24 px-6 bg-zinc-950 relative overflow-hidden">
           <div className="absolute top-[-15%] right-[-10%] w-[30%] h-[45%] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
           <div className="absolute bottom-[-20%] left-[-10%] w-[30%] h-[45%] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
@@ -1464,8 +1450,8 @@ export default function App() {
             </AnimatedSection>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {certifications.map((cert, index) => (
-                <AnimatedSection key={cert.title} delay={index * 0.08}>
+              {CERTIFICATIONS.map((cert, index) => (
+                <AnimatedSection key={cert.title + index} delay={index * 0.08}>
                   <Card3D>
                     <motion.div 
                       onClick={() => setSelectedCert(index)}
@@ -1562,9 +1548,9 @@ export default function App() {
           </div>
         </section>
 
-        {/* Certifications Lightbox Modal */}
+        {/* Lightbox */}
         <AnimatePresence>
-          {selectedCert !== null && certifications[selectedCert] && (
+          {selectedCert !== null && CERTIFICATIONS[selectedCert] && (
             <>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -1584,14 +1570,14 @@ export default function App() {
                   <div className="flex items-center justify-between px-5 md:px-8 py-4 border-b border-white/8 bg-black/40 backdrop-blur-sm">
                     <div className="min-w-0">
                       <h3 className="text-base md:text-xl font-bold text-white truncate">
-                        {certifications[selectedCert].title}
+                        {CERTIFICATIONS[selectedCert].title}
                       </h3>
                       <p className="text-xs md:text-sm text-zinc-400 mt-0.5 truncate flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
-                        {certifications[selectedCert].issuer}
+                        {CERTIFICATIONS[selectedCert].issuer}
                         <span className="text-zinc-600">·</span>
                         <Calendar className="w-3 h-3 text-pink-400 shrink-0" />
-                        {certifications[selectedCert].date}
+                        {CERTIFICATIONS[selectedCert].date}
                       </p>
                     </div>
                     <motion.button
@@ -1605,11 +1591,11 @@ export default function App() {
                     </motion.button>
                   </div>
                   <div className="flex-1 overflow-auto bg-black/60 p-4 md:p-10">
-                    <div className={`relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] bg-gradient-to-br ${certifications[selectedCert].color}`}>
+                    <div className={`relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] bg-gradient-to-br ${CERTIFICATIONS[selectedCert].color}`}>
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.15),transparent_60%)]" />
                       <motion.img
-                        src={certifications[selectedCert].image}
-                        alt={certifications[selectedCert].title}
+                        src={CERTIFICATIONS[selectedCert].image}
+                        alt={CERTIFICATIONS[selectedCert].title}
                         className="absolute inset-0 w-full h-full object-contain p-2 md:p-6"
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
@@ -1630,14 +1616,14 @@ export default function App() {
                           Add your certificate image to the <span className="font-mono text-pink-300 bg-white/5 px-2 py-0.5 rounded">public/certifications/</span> folder
                         </p>
                         <code className="px-4 py-2 rounded-lg bg-black/50 border border-white/10 text-xs md:text-sm text-white/60 font-mono">
-                          {certifications[selectedCert].image.replace('/certifications/', '')}
+                          {CERTIFICATIONS[selectedCert].image.replace('/certifications/', '')}
                         </code>
                       </div>
                     </div>
-                    {certifications[selectedCert].credentialUrl && (
+                    {CERTIFICATIONS[selectedCert].credentialUrl && (
                       <div className="mt-6 flex justify-center">
                         <motion.a
-                          href={certifications[selectedCert].credentialUrl!}
+                          href={CERTIFICATIONS[selectedCert].credentialUrl!}
                           target="_blank"
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.03 }}
@@ -1668,7 +1654,6 @@ export default function App() {
             </AnimatedSection>
 
             <div className="grid md:grid-cols-2 gap-12 items-start">
-              {/* Left: Contact Form */}
               <AnimatedSection className="w-full">
                 <motion.form 
                   className="space-y-6 bg-black/50 p-8 rounded-2xl border border-white/10"
@@ -1721,7 +1706,6 @@ export default function App() {
                 </motion.form>
               </AnimatedSection>
 
-              {/* Right: Contact Info & Socials */}
               <AnimatedSection delay={0.2} className="w-full">
                 <div className="space-y-8">
                   <div className="flex items-center gap-4 p-6 bg-black/50 rounded-2xl border border-white/10">
@@ -1794,7 +1778,7 @@ export default function App() {
         
         .animate-gradient-x {
           background-size: 200% 200%;
-          animation: gradient-x 3s ease infinite;
+          animation: gradient-x 3.5s ease infinite;
         }
 
         .perspective-1000 {
@@ -1803,6 +1787,14 @@ export default function App() {
         
         @media (pointer: coarse) or (max-width: 768px) {
           * { cursor: auto !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
         }
       `}} />
     </div>
