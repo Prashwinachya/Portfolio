@@ -1,32 +1,72 @@
-# React + TypeScript + Vite
+#  Hi, I'm Prashwin Prabhakar
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Welcome to my personal portfolio website!
 
-Currently, two official plugins are available:
+##  About Me
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+I'm a Computer Science Engineering student passionate about building modern web applications, AI-powered solutions, and creative user experiences.
 
-## React Compiler
+I enjoy exploring new technologies and transforming ideas into real-world projects.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+##  Portfolio
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Visit my portfolio here:
+https://www.vprashwinpj.me/
+---
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## 🛠Tech Stack
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- JavaScript
+- HTML5
+- CSS3
+
+---
+
+## Features
+
+- Responsive Design
+- Modern UI/UX
+- Smooth Animations
+- Projects Showcase
+- Skills Section
+- Contact Form
+- Resume Download
+
+---
+
+##  Projects
+
+Some of the featured projects include:
+
+- AI-Powered Biometric Vote Fraud Detection System
+- Career Guidance System
+- Personal Finance Management System
+- Web Development Projects
+
+---
+
+## Contact
+
+Email:
+prashwinpvt12@example.com
+
+LinkedIn:
+https://linkedin.com/in/prashwinpj
+
+GitHub:
+https://github.com/Prashwinachya
+
+---
+
+⭐ If you like this project, consider giving it a star.
+
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-purple?logo=vite)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38BDF8?logo=tailwind-css)
