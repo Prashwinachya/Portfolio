@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, memo, type ReactNode } from 'react';
-import { 
-  Code2, 
-  Terminal, 
-  Monitor, 
-  Database, 
-  ChevronRight, 
-  Mail, 
+import {
+  Code2,
+  Terminal,
+  Monitor,
+  Database,
+  ChevronRight,
+  Mail,
   ExternalLink,
   Menu,
   X,
@@ -18,14 +18,14 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 // --- Inline SVG brand icons ---
 const Github = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
   </svg>
 ));
 Github.displayName = 'Github';
 
 const Linkedin = memo(({ className = '' }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 ));
 Linkedin.displayName = 'Linkedin';
@@ -168,7 +168,7 @@ const PROJECTS: Project[] = [
     websiteUrl: ""
   },
   {
-    title: "Vote Fraud Detection System",
+    title: "CloudOps-AI",
     description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
     tags: ["Java", "Security", "Algorithms"],
     color: "from-cyan-500 to-teal-500",
@@ -177,7 +177,7 @@ const PROJECTS: Project[] = [
     websiteUrl: ""
   },
   {
-    title: "Career Guidance System",
+    title: "Eeva fashion Week",
     description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
     tags: ["Web Dev", "API Integration", "Database"],
     color: "from-orange-500 to-pink-600",
@@ -207,56 +207,93 @@ type Certification = {
 
 const CERTIFICATIONS: Certification[] = [
   {
-    title: "Full Stack Web Development",
-    issuer: "Certification Authority",
-    date: "March 2025",
-    image: "/certifications/cert1.jpg",
+    title: "Deloitte-Data Analytics",
+    issuer: "Forage",
+    date: "28th September 2025",
+    image: "/certifications/deloitte.png",
+    credentialUrl: "https://www.theforage.com/completion-certificates/9PBTqmSxAf6zZTseP/io9DzWKe3PTsiS6GG_9PBTqmSxAf6zZTseP_68c852b6605e6e6f57a8271d_1759070004730_completion_certificate.pdf",
+    color: "from-orange-500/40 to-pink-500/40",
+
+  },
+  {
+    title: "SQL",
+    issuer: "oneroadmap",
+    date: "5th October 2025",
+    image: "/certifications/OneRoad_PrashwinPJ.jpg",
+    credentialUrl: "https://www.oneroadmap.io/skills/sql/certificate/CERT-D09DBB12",
+    color: "from-blue-500/40 to-cyan-500/40",
+  },
+  {
+    title: "AWS Technical Essentials",
+    issuer: "AWS",
+    date: "14th November 2025",
+    image: "/certifications/AWS_technical.jpg",
     credentialUrl: "",
     color: "from-pink-500/40 to-purple-500/40",
   },
   {
-    title: "Java Programming Masterclass",
-    issuer: "Oracle University",
-    date: "January 2025",
-    image: "/certifications/cert2.jpg",
-    credentialUrl: "",
-    color: "from-blue-500/40 to-cyan-500/40",
-  },
-  {
-    title: "UI/UX Design Professional",
-    issuer: "Google Career Certificates",
-    date: "November 2024",
-    image: "/certifications/cert3.jpg",
-    credentialUrl: "",
-    color: "from-orange-500/40 to-pink-500/40",
-  },
-  {
-    title: "AI & Machine Learning Fundamentals",
-    issuer: "Coursera - Stanford",
-    date: "August 2024",
-    image: "/certifications/cert4.jpg",
+    title: "AWS Technical Essentials",
+    issuer: "AWS",
+    date: "27th November 2025",
+    image: "/certifications/AWS_python.jpg",
     credentialUrl: "",
     color: "from-cyan-500/40 to-teal-500/40",
   },
-  {
-    title: "Database Management System",
-    issuer: "Microsoft Learn",
-    date: "June 2024",
-    image: "/certifications/cert5.jpg",
-    credentialUrl: "",
-    color: "from-purple-500/40 to-indigo-500/40",
-  },
-  {
-    title: "Data Structures & Algorithms",
-    issuer: "Coding Platform",
-    date: "April 2024",
-    image: "/certifications/cert6.jpg",
-    credentialUrl: "",
-    color: "from-emerald-500/40 to-cyan-500/40",
-  },
 ];
 
-const NAV_ITEMS = ['Home', 'Skills', 'Projects', 'Certifications', 'Contact'] as const;
+type Experience = {
+  role: string;
+  company: string;
+  date: string;
+  description: string[];
+  skills: string[];
+  color: string;
+  certificateUrl?: string;
+};
+
+const EXPERIENCES: Experience[] = [
+  {
+    role: "Data Analyst ",
+    company: "Bluestock fintech",
+    date: "25th May - 25th July 2026",
+    description: [
+      "Designed ETL pipelines using Python, Pandas, SQL, and SQLite to process 10+ financial datasets.",
+      "Performed exploratory data analysis, preprocessing, and validation using Pandas and NumPy."
+    ],
+    skills: ["Data Analysis", "Tableau", "VisualCode"],
+    color: "from-pink-500 to-purple-500",
+    certificateUrl: "https://drive.google.com/file/d/16x3w6hFp3-WNz87OinHdr0A9kVxaWP-U/view?usp=sharing", // Add your Google Drive link here
+  },
+  {
+    role: "Core Java Intern",
+    company: "Upskill Campus ",
+    date: "9th October - 10th November 2025",
+    description: [
+      "Developed Java applications using Object-Oriented Programming concepts.",
+      "Worked with collections, exception handling and file operations.",
+
+    ],
+    skills: ["Java", "IOT", "Database"],
+    color: "from-cyan-500 to-blue-500",
+    certificateUrl: "https://drive.google.com/file/d/1oB8MMZkPGllFoJ8uRQ5tXrj_QKhjLHoX/view?usp=sharing", // Add your Google Drive link here
+  },
+  {
+
+    role: "Web Development Intern",
+    company: "Cognifyz Technologies",
+    date: " 30th September - 5th November 2025",
+    description: [
+      "Detail-oriented web developer skilled in building fast, responsive websites and web apps using modern frameworks.",
+      "Proven track record of turning design concepts into clean, maintainable code and boosting user engagement.",
+
+    ],
+    skills: ["HTML", "CSS", "Database", "VisualCode"],
+    color: "from-cyan-500 to-blue-500",
+    certificateUrl: "https://drive.google.com/file/d/1WduuBaPvXgk6oDlAO2frvUfOH69VEZ9h/view?usp=sharing", // Add your Google Drive link here
+  }
+];
+
+const NAV_ITEMS = ['Home', 'Skills', 'Experience', 'Projects', 'Certifications', 'Contact'] as const;
 
 const ROLES = [
   { text: "Web Developer", color: "from-pink-400 to-fuchsia-400", icon: <Code2 className="w-5 h-5" /> },
@@ -286,9 +323,9 @@ const PORTRAIT_TAGS = [
 ];
 
 // --- Count Up (memoized data reference via props) ---
-const CountUp = memo(({ to, className = '', duration = 1.6, delay = 0 }: { 
-  to: number; 
-  className?: string; 
+const CountUp = memo(({ to, className = '', duration = 1.6, delay = 0 }: {
+  to: number;
+  className?: string;
   duration?: number;
   delay?: number;
 }) => {
@@ -407,9 +444,9 @@ const CustomCursor = memo(() => {
 CustomCursor.displayName = 'CustomCursor';
 
 // --- Magnetic Button ---
-const MagneticButton = memo(({ children, className = '', href, target, rel, onClick }: { 
-  children: ReactNode; 
-  className?: string; 
+const MagneticButton = memo(({ children, className = '', href, target, rel, onClick }: {
+  children: ReactNode;
+  className?: string;
   href?: string;
   target?: string;
   rel?: string;
@@ -558,7 +595,7 @@ const FloatingShapes = memo(() => {
           }}
         />
       ))}
-      
+
       <motion.div
         className="absolute text-cyan-400/20"
         style={{
@@ -695,15 +732,15 @@ const Portrait3D = memo(() => {
 Portrait3D.displayName = 'Portrait3D';
 
 // --- Magnetic Nav Link ---
-const MagneticNavLink = memo(({ 
-  children, 
-  className = '', 
-  href, 
+const MagneticNavLink = memo(({
+  children,
+  className = '',
+  href,
   onClick,
-  isActive 
-}: { 
-  children: ReactNode; 
-  className?: string; 
+  isActive
+}: {
+  children: ReactNode;
+  className?: string;
   href: string;
   onClick?: () => void;
   isActive?: boolean;
@@ -837,18 +874,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-pink-500/30 overflow-x-hidden">
-      
+
       {isDesktop && <CustomCursor />}
-      
+
       {/* Global ambient blobs - GPU promoted */}
       <div className="fixed inset-0 z-0 opacity-15 pointer-events-none">
-        <motion.div 
+        <motion.div
           className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] rounded-full bg-pink-500 blur-[120px]"
           style={{ willChange: "transform" }}
           animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
           transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
+        <motion.div
           className="absolute bottom-[-10%] right-[-10%] w-[35%] h-[35%] rounded-full bg-cyan-500 blur-[120px]"
           style={{ willChange: "transform" }}
           animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
@@ -857,22 +894,21 @@ export default function App() {
       </div>
 
       {/* Navigation */}
-      <motion.nav 
+      <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-          scrolled 
-            ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_rgba(236,72,153,0.1)]' 
-            : 'bg-black/60 backdrop-blur-md border-b border-transparent'
-        }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled
+          ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_rgba(236,72,153,0.1)]'
+          : 'bg-black/60 backdrop-blur-md border-b border-transparent'
+          }`}
       >
-        <motion.div 
+        <motion.div
           className="h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 origin-left"
           style={{ scaleX: scrollProgress / 100, willChange: 'transform' }}
         />
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <motion.a 
+          <motion.a
             href="#home"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
@@ -920,11 +956,10 @@ export default function App() {
                   transition={{ delay: 0.6 + i * 0.08 }}
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.92 }}
-                  className={`w-9 h-9 rounded-full flex items-center justify-center text-zinc-400 border border-white/5 bg-white/[0.02] transition-all duration-300 ${
-                    social.label === 'GitHub' ? 'hover:text-white hover:bg-white/10 hover:border-white/20' :
+                  className={`w-9 h-9 rounded-full flex items-center justify-center text-zinc-400 border border-white/5 bg-white/[0.02] transition-all duration-300 ${social.label === 'GitHub' ? 'hover:text-white hover:bg-white/10 hover:border-white/20' :
                     social.label === 'LinkedIn' ? 'hover:text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/30' :
-                    'hover:text-pink-400 hover:bg-pink-500/10 hover:border-pink-500/30'
-                  }`}
+                      'hover:text-pink-400 hover:bg-pink-500/10 hover:border-pink-500/30'
+                    }`}
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -972,23 +1007,20 @@ export default function App() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`flex items-center justify-between px-5 py-4 rounded-xl font-medium transition-all duration-300 ${
-                      activeSection === item.toLowerCase()
-                        ? 'bg-gradient-to-r from-pink-500/15 via-purple-500/10 to-cyan-500/15 text-white border border-pink-500/20'
-                        : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
-                    }`}
+                    className={`flex items-center justify-between px-5 py-4 rounded-xl font-medium transition-all duration-300 ${activeSection === item.toLowerCase()
+                      ? 'bg-gradient-to-r from-pink-500/15 via-purple-500/10 to-cyan-500/15 text-white border border-pink-500/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
+                      }`}
                   >
                     <span className="flex items-center gap-3">
-                      <span className={`w-1.5 h-1.5 rounded-full ${
-                        activeSection === item.toLowerCase()
-                          ? 'bg-gradient-to-r from-pink-500 to-cyan-400'
-                          : 'bg-zinc-600'
-                      }`} />
+                      <span className={`w-1.5 h-1.5 rounded-full ${activeSection === item.toLowerCase()
+                        ? 'bg-gradient-to-r from-pink-500 to-cyan-400'
+                        : 'bg-zinc-600'
+                        }`} />
                       {item}
                     </span>
-                    <ChevronRight className={`w-4 h-4 transition-transform ${
-                      activeSection === item.toLowerCase() ? 'text-pink-400 translate-x-0' : 'opacity-0 -translate-x-2'
-                    }`} />
+                    <ChevronRight className={`w-4 h-4 transition-transform ${activeSection === item.toLowerCase() ? 'text-pink-400 translate-x-0' : 'opacity-0 -translate-x-2'
+                      }`} />
                   </motion.a>
                 ))}
 
@@ -1021,10 +1053,10 @@ export default function App() {
       </motion.nav>
 
       <main className="relative z-10">
-        
+
         {/* Hero */}
-        <section 
-          id="home" 
+        <section
+          id="home"
           className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-16 px-6 overflow-hidden bg-black"
         >
           {isDesktop && <FloatingShapes />}
@@ -1032,7 +1064,7 @@ export default function App() {
           <div className="absolute top-[20%] left-[5%] w-72 h-72 rounded-full bg-pink-600/[0.07] blur-[100px] pointer-events-none" />
           <div className="absolute bottom-[15%] right-[8%] w-80 h-80 rounded-full bg-cyan-500/[0.06] blur-[120px] pointer-events-none" />
 
-          <div 
+          <div
             className="absolute inset-0 pointer-events-none opacity-[0.04]"
             style={{
               backgroundImage: "linear-gradient(rgba(236,72,153,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.6) 1px, transparent 1px)",
@@ -1041,9 +1073,9 @@ export default function App() {
               WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
             }}
           />
-          
+
           <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            
+
             <div className="flex-1 space-y-7 text-center lg:text-left w-full">
               <AnimatedSection>
                 <motion.div
@@ -1061,8 +1093,8 @@ export default function App() {
                     Welcome to my portfolio
                   </span>
                 </motion.div>
-                
-                <motion.h1 
+
+                <motion.h1
                   className="mt-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight"
                   initial={{ opacity: 0, x: -80 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -1071,13 +1103,13 @@ export default function App() {
                 >
                   <span className="block text-white drop-shadow-[0_4px_24px_rgba(255,255,255,0.08)]">Hi, I'm</span>
                   <span className="relative inline-block mt-2">
-                    <motion.span 
+                    <motion.span
                       className="absolute inset-0 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-300 blur-[2px] opacity-60"
                       aria-hidden="true"
                     >
                       Prashwin PJ
                     </motion.span>
-                    <motion.span 
+                    <motion.span
                       className="relative bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-fuchsia-400 to-cyan-300"
                       animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
                       transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
@@ -1092,7 +1124,7 @@ export default function App() {
               <AnimatedSection delay={0.3}>
                 <RoleCarousel />
 
-                <motion.div 
+                <motion.div
                   className="mt-7 flex flex-wrap gap-2.5 justify-center lg:justify-start"
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -1114,17 +1146,17 @@ export default function App() {
                     </motion.span>
                   ))}
                 </motion.div>
-                
-                <motion.p 
+
+                <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.35 }}
                   className="mt-7 text-zinc-300/90 max-w-xl mx-auto lg:mx-0 leading-relaxed text-[15px] md:text-lg"
                 >
-                  I specialize in building <span className="text-white font-semibold">engaging</span>, and 
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-300 font-semibold mx-1">highly functional</span> 
-                  web applications. Passionate about converting difficult problems into 
+                  I specialize in building <span className="text-white font-semibold">engaging</span>, and
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-300 font-semibold mx-1">highly functional</span>
+                  web applications. Passionate about converting difficult problems into
                   <span className="text-white font-medium ml-1">elegant, user-friendly</span> solutions.
                 </motion.p>
               </AnimatedSection>
@@ -1141,9 +1173,8 @@ export default function App() {
                       whileHover={{ y: -4, scale: 1.02 }}
                       className="group relative rounded-2xl bg-white/[0.02] border border-white/8 hover:border-white/15 p-3 md:p-4 overflow-hidden transition-colors"
                     >
-                      <div className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity ${
-                        i === 0 ? 'bg-pink-500/10' : i === 1 ? 'bg-purple-500/10' : 'bg-cyan-500/10'
-                      }`} />
+                      <div className={`absolute -top-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity ${i === 0 ? 'bg-pink-500/10' : i === 1 ? 'bg-purple-500/10' : 'bg-cyan-500/10'
+                        }`} />
                       <div className={`inline-flex items-center gap-1.5 text-[10px] md:text-xs uppercase tracking-widest font-semibold text-zinc-500 ${stat.color}`}>
                         {stat.icon}
                         {stat.label}
@@ -1159,8 +1190,8 @@ export default function App() {
 
               <AnimatedSection delay={0.55}>
                 <div className="flex flex-wrap gap-3 md:gap-4 justify-center lg:justify-start pt-6">
-                  <MagneticButton 
-                    href="#projects" 
+                  <MagneticButton
+                    href="#projects"
                     className="group relative px-7 md:px-9 py-3.5 rounded-full text-black font-bold overflow-hidden"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-white via-pink-100 to-white bg-[length:200%_100%] animate-gradient-x" />
@@ -1180,8 +1211,8 @@ export default function App() {
                     </span>
                   </MagneticButton>
 
-                  <MagneticButton 
-                    href="#certifications" 
+                  <MagneticButton
+                    href="#certifications"
                     className="relative px-7 md:px-8 py-3.5 rounded-full overflow-hidden text-white font-semibold border border-white/15 hover:border-white/25 transition-all"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/12 to-cyan-500/0 opacity-0 hover:opacity-100 transition-opacity duration-500" />
@@ -1191,8 +1222,8 @@ export default function App() {
                     </span>
                   </MagneticButton>
 
-                  <MagneticButton 
-                    href="https://drive.google.com/file/d/1w2k1V3_6lDGBuyYH7f3gv3-TLVYpCVr4/view?usp=sharing" 
+                  <MagneticButton
+                    href="https://drive.google.com/file/d/1w2k1V3_6lDGBuyYH7f3gv3-TLVYpCVr4/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="relative px-7 md:px-8 py-3.5 rounded-full overflow-hidden text-white font-medium border border-white/15 hover:border-white/25 transition-all flex items-center gap-2"
@@ -1200,7 +1231,7 @@ export default function App() {
                     <span className="absolute inset-0 bg-white/5 opacity-0 hover:opacity-100 transition-opacity" />
                     <span className="relative flex items-center gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z" />
                       </svg>
                       My Resume
                     </span>
@@ -1277,11 +1308,11 @@ export default function App() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {SKILLS.map((skill, index) => (
                 <AnimatedSection key={skill.name} delay={index * 0.1}>
-                  <motion.div 
+                  <motion.div
                     whileHover={{ y: -10, scale: 1.02 }}
                     className="group p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-pink-500/60 hover:bg-white/[0.08] transition-all duration-300 flex flex-col items-center justify-center gap-4 cursor-pointer"
                   >
-                    <motion.div 
+                    <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
                       className="p-4 rounded-full bg-zinc-900 group-hover:bg-pink-500/15 text-zinc-400 group-hover:text-pink-300 transition-colors"
@@ -1289,9 +1320,9 @@ export default function App() {
                       {skill.icon}
                     </motion.div>
                     <span className="font-medium text-zinc-200 group-hover:text-white transition-colors">{skill.name}</span>
-                    
+
                     <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mt-2">
-                      <motion.div 
+                      <motion.div
                         className="h-full bg-gradient-to-r from-pink-500 to-cyan-400 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.level}%` }}
@@ -1321,12 +1352,12 @@ export default function App() {
                 <AnimatedSection key={`${project.title}-${index}`} delay={index * 0.15}>
                   <Card3D highlight={project.highlight}>
                     <div className={`group relative rounded-2xl overflow-hidden bg-zinc-950 border ${project.highlight ? 'border-pink-500/40 hover:border-pink-400/80 shadow-[0_0_30px_rgba(236,72,153,0.08)]' : 'border-white/8 hover:border-white/20'} transition-all duration-500 h-full flex flex-col`}>
-                      
+
                       {project.image ? (
                         <div className="h-52 w-full bg-zinc-900 flex items-center justify-center p-6 relative overflow-hidden transition-transform duration-500 group-hover:scale-[1.01] border-b border-white/5">
-                          <motion.img 
-                            src={project.image} 
-                            alt={project.title} 
+                          <motion.img
+                            src={project.image}
+                            alt={project.title}
                             className="max-h-full max-w-full object-contain rounded-lg filter drop-shadow-lg"
                             whileHover={{ scale: 1.1, rotate: 2 }}
                             transition={{ duration: 0.5 }}
@@ -1341,7 +1372,7 @@ export default function App() {
                       ) : (
                         <div className={`h-52 w-full bg-gradient-to-br ${project.color} flex items-center justify-center p-6 relative overflow-hidden transition-transform duration-500 group-hover:scale-[1.01]`}>
                           <div className="absolute inset-0 bg-black/20"></div>
-                          <motion.div 
+                          <motion.div
                             whileHover={{ scale: 1.2, rotate: 10 }}
                             transition={{ duration: 0.5 }}
                             className="transform relative z-10"
@@ -1355,14 +1386,14 @@ export default function App() {
                           )}
                         </div>
                       )}
-                      
-                      <motion.div 
+
+                      <motion.div
                         className="h-[2px] w-full bg-gradient-to-r from-pink-500 to-cyan-400"
                         initial={{ scaleX: 0 }}
                         whileHover={{ scaleX: 1 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                       />
-                      
+
                       <div className="p-8 flex-1 flex flex-col justify-between">
                         <div>
                           <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-pink-300 transition-colors flex justify-between items-center">
@@ -1379,10 +1410,10 @@ export default function App() {
                             {project.description}
                           </p>
                         </div>
-                        
+
                         <div className="flex flex-wrap gap-2 mt-4">
                           {project.tags.map(tag => (
-                            <motion.span 
+                            <motion.span
                               key={tag}
                               whileHover={{ scale: 1.05 }}
                               className="px-3 py-1 text-xs font-medium bg-white/5 border border-white/10 rounded-full text-zinc-300 group-hover:border-pink-400/30 transition-colors"
@@ -1418,10 +1449,85 @@ export default function App() {
                           </motion.a>
                         </div>
                       </div>
-                      
+
                       <div className="absolute inset-0 bg-gradient-to-t from-pink-950/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                     </div>
                   </Card3D>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Experience */}
+        <section id="experience" className="py-24 px-6 bg-black relative overflow-hidden">
+          <div className="max-w-6xl mx-auto relative">
+            <AnimatedSection>
+              <div className="flex items-center gap-4 mb-16">
+                <div className="w-12 h-1 bg-gradient-to-r from-pink-500 to-cyan-400 rounded-full"></div>
+                <div>
+                  <h2 className="text-3xl md:text-5xl font-bold text-white">
+                    Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400">Experience</span>
+                  </h2>
+                  <p className="text-zinc-400 mt-2 text-sm md:text-base">My professional journey and internships.</p>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <div className="relative border-l-2 border-white/10 ml-3 md:ml-6 space-y-12 pb-8">
+              {EXPERIENCES.map((exp, index) => (
+                <AnimatedSection key={index} delay={index * 0.1}>
+                  <div className="relative pl-8 md:pl-12">
+                    <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-zinc-950 border-2 border-pink-500">
+                      <div className="absolute inset-0 bg-pink-500 rounded-full animate-ping opacity-20"></div>
+                    </div>
+
+                    <Card3D className="group">
+                      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20">
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                          <div>
+                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-purple-400 transition-colors">
+                              {exp.role}
+                            </h3>
+                            <div className="flex items-center flex-wrap gap-2 mt-2 text-zinc-300 font-medium">
+                              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                              {exp.company}
+                              <a
+                                href={exp.certificateUrl || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-md hover:bg-pink-500/20 hover:border-pink-500/30 transition-all text-xs font-semibold"
+                              >
+                                <Award className="w-3.5 h-3.5" />
+                                Certificate
+                              </a>
+                            </div>
+                          </div>
+                          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-400 whitespace-nowrap h-fit">
+                            <Calendar className="w-4 h-4 text-pink-400" />
+                            {exp.date}
+                          </div>
+                        </div>
+
+                        <ul className="space-y-3 mb-6">
+                          {exp.description.map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-zinc-400 text-sm md:text-base leading-relaxed">
+                              <ChevronRight className="w-5 h-5 text-pink-500 shrink-0 mt-0.5" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="flex flex-wrap gap-2 pt-6 border-t border-white/5">
+                          {exp.skills.map((skill, i) => (
+                            <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-md text-xs font-medium text-zinc-300">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </Card3D>
+                  </div>
                 </AnimatedSection>
               ))}
             </div>
@@ -1432,7 +1538,7 @@ export default function App() {
         <section id="certifications" className="py-24 px-6 bg-zinc-950 relative overflow-hidden">
           <div className="absolute top-[-15%] right-[-10%] w-[30%] h-[45%] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
           <div className="absolute bottom-[-20%] left-[-10%] w-[30%] h-[45%] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
-          
+
           <div className="max-w-6xl mx-auto relative">
             <AnimatedSection>
               <div className="flex items-center gap-4 mb-16">
@@ -1453,14 +1559,14 @@ export default function App() {
               {CERTIFICATIONS.map((cert, index) => (
                 <AnimatedSection key={cert.title + index} delay={index * 0.08}>
                   <Card3D>
-                    <motion.div 
+                    <motion.div
                       onClick={() => setSelectedCert(index)}
                       className="group relative rounded-2xl overflow-hidden bg-zinc-950 border border-white/8 hover:border-pink-500/30 transition-all duration-500 h-full flex flex-col cursor-pointer"
                       whileHover={{ y: -6 }}
                     >
                       <div className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${cert.color} border-b border-white/5`}>
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_50%)]" />
-                        
+
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 transition-opacity duration-300">
                           <motion.img
                             src={cert.image}
@@ -1487,15 +1593,15 @@ export default function App() {
                         </div>
 
                         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-90" />
-                        
-                        <motion.div 
+
+                        <motion.div
                           className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/80 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-100 scale-75"
                         >
                           <ZoomIn className="w-4 h-4" />
                         </motion.div>
 
                         <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                          <motion.div 
+                          <motion.div
                             initial={{ x: -10, opacity: 0 }}
                             whileInView={{ x: 0, opacity: 1 }}
                             viewport={{ once: true }}
@@ -1514,7 +1620,7 @@ export default function App() {
                           transition={{ duration: 0.5, ease: 'easeOut' }}
                         />
                       </div>
-                      
+
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <h3 className="text-lg font-bold mb-1.5 text-white group-hover:text-pink-300 transition-colors leading-tight">
@@ -1538,7 +1644,7 @@ export default function App() {
                           </motion.div>
                         </div>
                       </div>
-                      
+
                       <div className={`absolute inset-0 bg-gradient-to-t ${cert.color} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-500 pointer-events-none`}></div>
                     </motion.div>
                   </Card3D>
@@ -1648,14 +1754,14 @@ export default function App() {
             <AnimatedSection>
               <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white text-center">Let's Work Together</h2>
               <p className="text-zinc-400 mb-12 max-w-2xl mx-auto text-center">
-                I'm currently available for new projects and collaborations. 
+                I'm currently available for new projects and collaborations.
                 Whether you have an idea to build or just want to say hi, my inbox is always open!
               </p>
             </AnimatedSection>
 
             <div className="grid md:grid-cols-2 gap-12 items-start">
               <AnimatedSection className="w-full">
-                <motion.form 
+                <motion.form
                   className="space-y-6 bg-black/50 p-8 rounded-2xl border border-white/10"
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -1664,37 +1770,37 @@ export default function App() {
                   }}
                 >
                   <h3 className="text-xl font-bold text-white mb-4">Send me a message</h3>
-                  
+
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2">Your Name</label>
-                    <input 
-                      type="text" 
-                      required 
+                    <input
+                      type="text"
+                      required
                       className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500"
                       placeholder="Eeva"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2">Your Email</label>
-                    <input 
-                      type="email" 
-                      required 
+                    <input
+                      type="email"
+                      required
                       className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500"
                       placeholder="eeva@gmail.com"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2">Message</label>
-                    <textarea 
+                    <textarea
                       rows={5}
-                      required 
+                      required
                       className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-pink-500 resize-none"
                       placeholder="Hello, I'd like to work with you on..."
                     />
                   </div>
-                  
+
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.02 }}
@@ -1712,8 +1818,8 @@ export default function App() {
                     <div className="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center">
                       <Mail className="w-5 h-5 text-pink-500" />
                     </div>
-                    <a 
-                      href="mailto:prashwinpvt12@gmail.com" 
+                    <a
+                      href="mailto:prashwinpvt12@gmail.com"
                       className="text-zinc-300 hover:text-pink-400 transition-colors"
                     >
                       prashwinpvt12@gmail.com
@@ -1722,21 +1828,21 @@ export default function App() {
                   <div className="flex items-center gap-4 p-6 bg-black/50 rounded-2xl border border-white/10">
                     <div className="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-cyan-500" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                       </svg>
                     </div>
-                    <a 
-                      href="tel:+916360467265" 
+                    <a
+                      href="tel:+916360467265"
                       className="text-zinc-300 hover:text-cyan-400 transition-colors"
                     >
                       +91 6360467265
                     </a>
                   </div>
-                  
+
                   <div className="flex items-center gap-4">
                     <div className="text-zinc-400 text-sm">Or connect with me:</div>
                   </div>
-                  
+
                   <div className="flex gap-4">
                     {[
                       { icon: <Github className="w-5 h-5" />, color: "hover:bg-white hover:text-black", href: "https://github.com/Prashwinachya" },
@@ -1760,7 +1866,7 @@ export default function App() {
               </AnimatedSection>
             </div>
           </div>
-          
+
           <div className="text-center text-zinc-600 text-sm mt-16">
             <p>© {new Date().getFullYear()} Prashwin PJ. All rights reserved.</p>
           </div>
@@ -1768,7 +1874,8 @@ export default function App() {
 
       </main>
 
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         html { scroll-behavior: smooth; }
         
         @keyframes gradient-x {
