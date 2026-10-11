@@ -330,7 +330,7 @@ const ROLE_CHIPS = [
 ];
 
 const STATS = [
-  { label: 'Projects', value: 6, suffix: '+', icon: <Code2 className="w-3.5 h-3.5" />, color: 'text-pink-400' },
+  { label: 'Projects', value: 12, suffix: '+', icon: <Code2 className="w-3.5 h-3.5" />, color: 'text-pink-400' },
   { label: 'Certs', value: 6, suffix: '+', icon: <Award className="w-3.5 h-3.5" />, color: 'text-purple-400' },
   { label: 'Skills', value: 5, suffix: '+', icon: <Monitor className="w-3.5 h-3.5" />, color: 'text-cyan-400' },
 ];
