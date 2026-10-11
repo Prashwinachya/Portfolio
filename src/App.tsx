@@ -13,7 +13,7 @@ import {
   Calendar,
   ZoomIn
 } from 'lucide-react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 
 // --- Inline SVG brand icons ---
 const Github = memo(({ className = '' }: { className?: string }) => (
@@ -134,6 +134,7 @@ const PROJECTS: Project[] = [
     description: "A comprehensive financial management and tracking platform built to streamline transactions and user portfolios.",
     tags: ["Java", "Web Technologies", "Database"],
     color: "from-pink-500 to-purple-500",
+    image: "/projects/v-finance.svg",
     icon: <VFinance className="w-12 h-12" />,
     highlight: true,
     githubUrl: "https://github.com/Prashwinachya/V-Finance.git",
@@ -144,6 +145,7 @@ const PROJECTS: Project[] = [
     description: "An inventory and equipment tracking system designed for industrial applications to monitor machinery status and maintenance.",
     tags: ["C Programming", "System Architecture", "UI/UX"],
     color: "from-blue-500 to-cyan-500",
+    image: "/projects/industry-equipment.svg",
     icon: <IndustryEquipment className="w-12 h-12" />,
     githubUrl: "https://github.com/Prashwinachya/Industrial-Equipment-System.git",
     websiteUrl: ""
@@ -153,6 +155,7 @@ const PROJECTS: Project[] = [
     description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
     tags: ["Java", "Security", "Algorithms"],
     color: "from-cyan-500 to-teal-500",
+    image: "/projects/vote-security.svg",
     icon: <VoteSecurity className="w-12 h-12" />,
     githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
     websiteUrl: ""
@@ -162,6 +165,7 @@ const PROJECTS: Project[] = [
     description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
     tags: ["Web Dev", "API Integration", "Database"],
     color: "from-orange-500 to-pink-600",
+    image: "/projects/career-guidance.svg",
     icon: <CareerGuidance className="w-12 h-12" />,
     highlight: true,
     githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
@@ -169,18 +173,20 @@ const PROJECTS: Project[] = [
   },
   {
     title: "CloudOps-AI",
-    description: "A secure and transparent voting application with advanced algorithms to detect and prevent fraudulent activities during elections.",
-    tags: ["Java", "Security", "Algorithms"],
-    color: "from-cyan-500 to-teal-500",
+    description: "An AI-powered CloudOps intelligence platform for automated infrastructure management, incident forecasting, and multi-cloud telemetry.",
+    tags: ["CloudOps", "AI Telemetry", "Kubernetes"],
+    color: "from-cyan-500 to-blue-500",
+    image: "/projects/cloudops-ai.svg",
     icon: <VoteSecurity className="w-12 h-12" />,
     githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
     websiteUrl: "https://cloud-ops-ai-two.vercel.app/"
   },
   {
     title: "Eeva fashion Week",
-    description: "An interactive platform helping students and professionals navigate their career paths through personalized recommendations.",
-    tags: ["Web Dev", "API Integration", "Database"],
+    description: "A high-fashion digital runway and showcase platform featuring designer collections, lookbooks, and interactive event schedules.",
+    tags: ["Web Dev", "UI/UX", "TailwindCSS"],
     color: "from-orange-500 to-pink-600",
+    image: "/projects/eeva-fashion.png",
     icon: <CareerGuidance className="w-12 h-12" />,
     highlight: true,
     githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
@@ -413,12 +419,30 @@ const RoleCarousel = memo(() => {
 });
 RoleCarousel.displayName = 'RoleCarousel';
 
-// --- Custom Cursor (optimized: passive listener, softer springs) ---
+// --- Isolated Scroll Progress Bar (zero re-renders in parent App) ---
+const ScrollProgressBar = memo(() => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  return (
+    <motion.div
+      className="h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 origin-left"
+      style={{ scaleX }}
+    />
+  );
+});
+ScrollProgressBar.displayName = 'ScrollProgressBar';
+
+// --- Custom Cursor (optimized: GPU transform, no mix-blend-difference overhead) ---
 const CustomCursor = memo(() => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const cursorXSpring = useSpring(cursorX, { damping: 40, stiffness: 300, mass: 0.6 });
-  const cursorYSpring = useSpring(cursorY, { damping: 40, stiffness: 300, mass: 0.6 });
+  const cursorXSpring = useSpring(cursorX, { damping: 35, stiffness: 350, mass: 0.4 });
+  const cursorYSpring = useSpring(cursorY, { damping: 35, stiffness: 350, mass: 0.4 });
 
   useEffect(() => {
     let raf = 0;
@@ -445,11 +469,11 @@ const CustomCursor = memo(() => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-pink-500 pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-pink-500/80 bg-pink-500/10 pointer-events-none z-[9999]"
         style={{ x: cursorXSpring, y: cursorYSpring, willChange: 'transform' }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyan-400 pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyan-400 pointer-events-none z-[9999]"
         style={{ x: cursorX, y: cursorY, willChange: 'transform' }}
       />
     </>
@@ -514,18 +538,26 @@ const MagneticButton = memo(({ children, className = '', href, target, rel, onCl
 });
 MagneticButton.displayName = 'MagneticButton';
 
-// --- 3D Card ---
+// --- 3D Card (optimized: cached bounding box to eliminate layout reflow) ---
 const Card3D = memo(({ children, className = '' }: { children: ReactNode; className?: string; highlight?: boolean }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-100, 100], [15, -15]);
-  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+  const rotateX = useTransform(y, [-100, 100], [8, -8]);
+  const rotateY = useTransform(x, [-100, 100], [-8, 8]);
   const ref = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   let raf = 0;
 
+  const handleMouseEnter = () => {
+    if (ref.current) rectRef.current = ref.current.getBoundingClientRect();
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!rectRef.current) {
+      if (ref.current) rectRef.current = ref.current.getBoundingClientRect();
+      else return;
+    }
+    const rect = rectRef.current;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const nx = e.clientX - rect.left - centerX;
@@ -540,6 +572,7 @@ const Card3D = memo(({ children, className = '' }: { children: ReactNode; classN
   };
 
   const handleMouseLeave = () => {
+    rectRef.current = null;
     x.set(0);
     y.set(0);
   };
@@ -548,17 +581,18 @@ const Card3D = memo(({ children, className = '' }: { children: ReactNode; classN
     <motion.div
       ref={ref}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", willChange: 'transform' }}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={className}
     >
-      <div style={{ transform: "translateZ(20px)" }}>{children}</div>
+      <div style={{ transform: "translateZ(10px)" }}>{children}</div>
     </motion.div>
   );
 });
 Card3D.displayName = 'Card3D';
 
-// --- Animated Section Wrapper ---
+// --- Animated Section Wrapper (snappy, low margin for instant reveal) ---
 const AnimatedSection = memo(({
   children,
   className = '',
@@ -570,10 +604,10 @@ const AnimatedSection = memo(({
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -693,19 +727,9 @@ const Portrait3D = memo(() => {
       style={{ rotateX, rotateY, scale, transformStyle: "preserve-3d", willChange: 'transform' }}
       className="relative"
     >
-      <motion.div
-        className="absolute -inset-4 rounded-full"
-        style={{
-          background: "conic-gradient(from 0deg, #ec4899, #8b5cf6, #06b6d4, #ec4899)",
-          filter: "blur(22px)",
-          opacity: 0.55,
-          willChange: "transform",
-        }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      />
+      <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20 blur-xl opacity-75" />
 
-      <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/20 backdrop-blur-sm">
+      <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/20 shadow-[0_0_50px_rgba(236,72,153,0.25)]">
         <img
           src="/PRASHWIN.jpg"
           alt="Prashwin PJ"
@@ -813,77 +837,51 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedCert, setSelectedCert] = useState<number | null>(null);
 
-  // --- Resize detection (throttled via rAF) ---
+  // --- Resize detection ---
   useEffect(() => {
-    let raf = 0;
     const checkDesktop = () => {
-      if (!raf) {
-        raf = requestAnimationFrame(() => {
-          setIsDesktop(window.matchMedia('(pointer: fine) and (min-width: 768px)').matches);
-          raf = 0;
-        });
-      }
+      setIsDesktop(window.matchMedia('(pointer: fine) and (min-width: 768px)').matches);
     };
     checkDesktop();
     window.addEventListener('resize', checkDesktop, { passive: true });
-    return () => {
-      window.removeEventListener('resize', checkDesktop);
-      if (raf) cancelAnimationFrame(raf);
-    };
+    return () => window.removeEventListener('resize', checkDesktop);
   }, []);
 
-  // --- Scroll handler: rAF batched, only setState when values actually differ ---
+  // --- Navbar scroll background toggle (zero layout thrashing) ---
   useEffect(() => {
-    let ticking = false;
     let lastScrolled = false;
-    let lastProgress = -1;
-    let lastActive = 'home';
-    const sections = NAV_ITEMS.map(i => i.toLowerCase());
-
-    const update = () => {
-      const y = window.scrollY;
-      const newScrolled = y > 20;
-      if (newScrolled !== lastScrolled) {
-        lastScrolled = newScrolled;
-        setScrolled(newScrolled);
-      }
-
-      const doc = document.documentElement;
-      const h = doc.scrollHeight - doc.clientHeight;
-      const pct = h > 0 ? Math.round(((y || document.body.scrollTop) / h) * 100) : 0;
-      if (pct !== lastProgress) {
-        lastProgress = pct;
-        setScrollProgress(pct);
-      }
-
-      let cur = 'home';
-      for (const s of sections) {
-        const el = document.getElementById(s);
-        if (el) {
-          const r = el.getBoundingClientRect();
-          if (r.top <= 150) cur = s;
-        }
-      }
-      if (cur !== lastActive) {
-        lastActive = cur;
-        setActiveSection(cur);
-      }
-      ticking = false;
-    };
-
     const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
+      const isPast = window.scrollY > 20;
+      if (isPast !== lastScrolled) {
+        lastScrolled = isPast;
+        setScrolled(isPast);
       }
     };
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    update();
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // --- IntersectionObserver for active section (zero reflow/layout thrashing) ---
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px' }
+    );
+
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.toLowerCase());
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -891,20 +889,10 @@ export default function App() {
 
       {isDesktop && <CustomCursor />}
 
-      {/* Global ambient blobs - GPU promoted */}
-      <div className="fixed inset-0 z-0 opacity-15 pointer-events-none">
-        <motion.div
-          className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] rounded-full bg-pink-500 blur-[120px]"
-          style={{ willChange: "transform" }}
-          animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-[-10%] right-[-10%] w-[35%] h-[35%] rounded-full bg-cyan-500 blur-[120px]"
-          style={{ willChange: "transform" }}
-          animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
-          transition={{ duration: 34, repeat: Infinity, ease: "easeInOut" }}
-        />
+      {/* Global ambient glows - Static GPU radial gradients (zero animation overhead) */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.25)_0%,transparent_70%)]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.25)_0%,transparent_70%)]" />
       </div>
 
       {/* Navigation */}
@@ -917,10 +905,7 @@ export default function App() {
           : 'bg-black/60 backdrop-blur-md border-b border-transparent'
           }`}
       >
-        <motion.div
-          className="h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 origin-left"
-          style={{ scaleX: scrollProgress / 100, willChange: 'transform' }}
-        />
+        <ScrollProgressBar />
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <motion.a
             href="#home"
@@ -1368,17 +1353,17 @@ export default function App() {
                     <div className={`group relative rounded-2xl overflow-hidden bg-zinc-950 border ${project.highlight ? 'border-pink-500/40 hover:border-pink-400/80 shadow-[0_0_30px_rgba(236,72,153,0.08)]' : 'border-white/8 hover:border-white/20'} transition-all duration-500 h-full flex flex-col`}>
 
                       {project.image ? (
-                        <div className="h-52 w-full bg-zinc-900 flex items-center justify-center p-6 relative overflow-hidden transition-transform duration-500 group-hover:scale-[1.01] border-b border-white/5">
-                          <motion.img
+                        <div className="h-52 w-full bg-zinc-950 relative overflow-hidden border-b border-white/10 group-hover:border-white/20">
+                          <img
                             src={project.image}
                             alt={project.title}
-                            className="max-h-full max-w-full object-contain rounded-lg filter drop-shadow-lg"
-                            whileHover={{ scale: 1.1, rotate: 2 }}
-                            transition={{ duration: 0.5 }}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent pointer-events-none"></div>
                           {project.highlight && (
-                            <span className="absolute top-3 right-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-pink-500 text-black rounded-full shadow-lg">
+                            <span className="absolute top-3 right-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-pink-500 text-black rounded-full shadow-lg z-10">
                               Featured
                             </span>
                           )}
@@ -1594,6 +1579,8 @@ export default function App() {
                           <motion.img
                             src={cert.image}
                             alt={cert.title}
+                            loading="lazy"
+                            decoding="async"
                             className="absolute inset-0 w-full h-full object-cover rounded-lg"
                             onError={(e) => {
                               const target = e.currentTarget as HTMLImageElement;

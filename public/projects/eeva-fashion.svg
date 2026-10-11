@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="bg-grad-eeva" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140714" />
+      <stop offset="50%" stop-color="#210c22" />
+      <stop offset="100%" stop-color="#100511" />
+    </linearGradient>
+    <linearGradient id="purple-rose" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+    <filter id="glow-eeva" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg-grad-eeva)" />
+
+  <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+    <line x1="0" y1="90" x2="800" y2="90" />
+    <line x1="0" y1="180" x2="800" y2="180" />
+    <line x1="0" y1="270" x2="800" y2="270" />
+    <line x1="200" y1="0" x2="200" y2="450" />
+    <line x1="400" y1="0" x2="400" y2="450" />
+    <line x1="600" y1="0" x2="600" y2="450" />
+  </g>
+
+  <circle cx="240" cy="180" r="150" fill="#f43f5e" opacity="0.12" filter="url(#glow-eeva)" />
+  <circle cx="600" cy="240" r="160" fill="#ec4899" opacity="0.12" filter="url(#glow-eeva)" />
+
+  <g transform="translate(40, 30)">
+    <rect width="720" height="390" rx="16" fill="rgba(22, 10, 23, 0.85)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+
+    <rect width="720" height="42" rx="16" fill="rgba(255, 255, 255, 0.03)" />
+    <circle cx="24" cy="21" r="5" fill="#ef4444" opacity="0.8" />
+    <circle cx="40" cy="21" r="5" fill="#f59e0b" opacity="0.8" />
+    <circle cx="56" cy="21" r="5" fill="#10b981" opacity="0.8" />
+
+    <rect x="230" y="10" width="260" height="22" rx="6" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 255, 255, 0.08)" />
+    <text x="360" y="25" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">eeva-fashion-week.vercel.app</text>
+
+    <!-- Editorial Header Section -->
+    <rect x="36" y="65" width="648" height="110" rx="12" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.08)" />
+    <text x="56" y="96" fill="#fb7185" font-size="11" font-weight="700" letter-spacing="2" font-family="system-ui, -apple-system, sans-serif">PARIS • MILAN • TOKYO</text>
+    <text x="56" y="132" fill="#ffffff" font-size="28" font-weight="800" font-family="system-ui, -apple-system, sans-serif">EEVA RUNWAY 2026</text>
+    <text x="56" y="156" fill="#e2e8f0" font-size="13" font-family="system-ui, -apple-system, sans-serif">Haute Couture Collection &amp; Exclusive Designer Showcase</text>
+
+    <rect x="530" y="85" width="134" height="34" rx="17" fill="url(#purple-rose)" />
+    <text x="597" y="107" fill="#ffffff" font-size="12" font-weight="700" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">LIVE STREAM ●</text>
+
+    <!-- Showcase Cards / Lookbook Gallery -->
+    <rect x="36" y="195" width="198" height="165" rx="12" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.07)" />
+    <rect x="52" y="210" width="166" height="95" rx="8" fill="rgba(244, 63, 94, 0.15)" stroke="rgba(244, 63, 94, 0.3)" />
+    <text x="135" y="262" fill="#fda4af" font-size="28" text-anchor="middle">✦</text>
+    <text x="52" y="325" fill="#ffffff" font-size="13" font-weight="700" font-family="system-ui, -apple-system, sans-serif">Nocturne Velvet</text>
+    <text x="52" y="343" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Look 01 • Maison Eeva</text>
+
+    <rect x="261" y="195" width="198" height="165" rx="12" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.07)" />
+    <rect x="277" y="210" width="166" height="95" rx="8" fill="rgba(236, 72, 153, 0.15)" stroke="rgba(236, 72, 153, 0.3)" />
+    <text x="360" y="262" fill="#f472b6" font-size="28" text-anchor="middle">✧</text>
+    <text x="277" y="325" fill="#ffffff" font-size="13" font-weight="700" font-family="system-ui, -apple-system, sans-serif">Silk Aurora</text>
+    <text x="277" y="343" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Look 02 • Atelier Luxe</text>
+
+    <rect x="486" y="195" width="198" height="165" rx="12" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.07)" />
+    <rect x="502" y="210" width="166" height="95" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.3)" />
+    <text x="585" y="262" fill="#c084fc" font-size="28" text-anchor="middle">✤</text>
+    <text x="502" y="325" fill="#ffffff" font-size="13" font-weight="700" font-family="system-ui, -apple-system, sans-serif">Prism Tailoring</text>
+    <text x="502" y="343" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Look 03 • Studio Modern</text>
+  </g>
+</svg>

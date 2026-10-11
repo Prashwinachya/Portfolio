@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0518" />
+      <stop offset="50%" stop-color="#110c26" />
+      <stop offset="100%" stop-color="#090514" />
+    </linearGradient>
+    <linearGradient id="pink-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="chart-area" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bg-grad)" />
+
+  <!-- Grid lines -->
+  <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+    <line x1="0" y1="90" x2="800" y2="90" />
+    <line x1="0" y1="180" x2="800" y2="180" />
+    <line x1="0" y1="270" x2="800" y2="270" />
+    <line x1="0" y1="360" x2="800" y2="360" />
+    <line x1="160" y1="0" x2="160" y2="450" />
+    <line x1="320" y1="0" x2="320" y2="450" />
+    <line x1="480" y1="0" x2="480" y2="450" />
+    <line x1="640" y1="0" x2="640" y2="450" />
+  </g>
+
+  <!-- Ambient Glow -->
+  <circle cx="200" cy="180" r="140" fill="#ec4899" opacity="0.12" filter="url(#glow)" />
+  <circle cx="620" cy="240" r="160" fill="#a855f7" opacity="0.1" filter="url(#glow)" />
+
+  <!-- App Window Container -->
+  <g transform="translate(40, 30)">
+    <!-- Window Frame -->
+    <rect width="720" height="390" rx="16" fill="rgba(15, 12, 28, 0.85)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+
+    <!-- Window Topbar -->
+    <rect width="720" height="42" rx="16" fill="rgba(255, 255, 255, 0.03)" />
+    <circle cx="24" cy="21" r="5" fill="#ef4444" opacity="0.8" />
+    <circle cx="40" cy="21" r="5" fill="#f59e0b" opacity="0.8" />
+    <circle cx="56" cy="21" r="5" fill="#10b981" opacity="0.8" />
+
+    <!-- Search/URL Bar -->
+    <rect x="230" y="10" width="260" height="22" rx="6" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 255, 255, 0.08)" />
+    <text x="360" y="25" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">vfinance.app/portfolio</text>
+
+    <!-- Main Dashboard Header -->
+    <text x="36" y="80" fill="#ffffff" font-size="20" font-weight="700" font-family="system-ui, -apple-system, sans-serif">Total Balance</text>
+    <text x="36" y="118" fill="#ffffff" font-size="34" font-weight="800" font-family="system-ui, -apple-system, sans-serif">$84,250.00</text>
+    <rect x="245" y="93" width="75" height="26" rx="13" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.3)" />
+    <text x="282" y="110" fill="#34d399" font-size="12" font-weight="700" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">+18.4%</text>
+
+    <!-- Action Buttons -->
+    <rect x="520" y="88" width="80" height="32" rx="8" fill="url(#pink-purple)" />
+    <text x="560" y="109" fill="#ffffff" font-size="12" font-weight="600" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">Send</text>
+    <rect x="612" y="88" width="76" height="32" rx="8" fill="rgba(255, 255, 255, 0.08)" stroke="rgba(255, 255, 255, 0.15)" />
+    <text x="650" y="109" fill="#e5e7eb" font-size="12" font-weight="600" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle">Receive</text>
+
+    <!-- Chart Panel -->
+    <rect x="36" y="145" width="410" height="215" rx="12" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.06)" />
+    <text x="52" y="172" fill="#9ca3af" font-size="12" font-weight="600" font-family="system-ui, -apple-system, sans-serif">Portfolio Growth</text>
+    <text x="400" y="172" fill="#ec4899" font-size="12" font-weight="600" font-family="system-ui, -apple-system, sans-serif">1M</text>
+
+    <!-- Chart Line & Area -->
+    <path d="M 50 320 Q 120 290 170 260 T 260 220 T 350 200 T 430 180 L 430 340 L 50 340 Z" fill="url(#chart-area)" />
+    <path d="M 50 320 Q 120 290 170 260 T 260 220 T 350 200 T 430 180" fill="none" stroke="url(#pink-purple)" stroke-width="3.5" stroke-linecap="round" />
+    <circle cx="430" cy="180" r="5" fill="#ec4899" stroke="#ffffff" stroke-width="2" />
+
+    <!-- Right Side Cards: Quick Stats & Recent Activity -->
+    <rect x="462" y="145" width="226" height="66" rx="10" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.06)" />
+    <circle cx="488" cy="178" r="14" fill="rgba(236, 72, 153, 0.15)" />
+    <text x="488" y="183" fill="#ec4899" font-size="14" font-weight="700" text-anchor="middle">↑</text>
+    <text x="515" y="172" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Monthly Inflow</text>
+    <text x="515" y="193" fill="#ffffff" font-size="16" font-weight="700" font-family="system-ui, -apple-system, sans-serif">$12,480.00</text>
+
+    <rect x="462" y="220" width="226" height="66" rx="10" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.06)" />
+    <circle cx="488" cy="253" r="14" fill="rgba(168, 85, 247, 0.15)" />
+    <text x="488" y="258" fill="#a855f7" font-size="14" font-weight="700" text-anchor="middle">★</text>
+    <text x="515" y="247" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Yield Return</text>
+    <text x="515" y="268" fill="#ffffff" font-size="16" font-weight="700" font-family="system-ui, -apple-system, sans-serif">+ 9.2% APY</text>
+
+    <rect x="462" y="294" width="226" height="66" rx="10" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.06)" />
+    <circle cx="488" cy="327" r="14" fill="rgba(59, 130, 246, 0.15)" />
+    <text x="488" y="331" fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle">⚡</text>
+    <text x="515" y="321" fill="#9ca3af" font-size="11" font-family="system-ui, -apple-system, sans-serif">Active Assets</text>
+    <text x="515" y="342" fill="#ffffff" font-size="16" font-weight="700" font-family="system-ui, -apple-system, sans-serif">14 Cryptos &amp; ETFs</text>
+  </g>
+</svg>
