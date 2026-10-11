@@ -165,7 +165,7 @@ const PROJECTS: Project[] = [
     icon: <CareerGuidance className="w-12 h-12" />,
     highlight: true,
     githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
-    websiteUrl: ""
+    websiteUrl: "https://career-guidance-system-wd.vercel.app/"
   },
   {
     title: "CloudOps-AI",
@@ -174,7 +174,7 @@ const PROJECTS: Project[] = [
     color: "from-cyan-500 to-teal-500",
     icon: <VoteSecurity className="w-12 h-12" />,
     githubUrl: "https://github.com/Prashwinachya/Voting_System.git",
-    websiteUrl: ""
+    websiteUrl: "https://cloud-ops-ai-two.vercel.app/"
   },
   {
     title: "Eeva fashion Week",
@@ -184,7 +184,7 @@ const PROJECTS: Project[] = [
     icon: <CareerGuidance className="w-12 h-12" />,
     highlight: true,
     githubUrl: "https://github.com/Prashwinachya/Career-Guidance-System.git",
-    websiteUrl: ""
+    websiteUrl: "https://eeva-fashion-week.vercel.app/"
   }
 ];
 
@@ -245,6 +245,7 @@ type Experience = {
   role: string;
   company: string;
   date: string;
+  type?: string;
   description: string[];
   skills: string[];
   color: string;
@@ -252,6 +253,19 @@ type Experience = {
 };
 
 const EXPERIENCES: Experience[] = [
+  {
+    role: "Executive Sales Representative",
+    company: "NUESG Global Private Limited",
+    date: "Present",
+    type: "Full Time",
+    description: [
+      "Driving revenue generation, client outreach, and strategic customer acquisition across target markets.",
+      "Managing end-to-end sales cycles, high-impact product presentations, and consultative client discussions.",
+      "Collaborating with cross-functional teams to identify client needs and deliver value-driven solutions."
+    ],
+    skills: ["Sales Strategy", "Client Acquisition", "Business Development", "Negotiation", "CRM", "Communication"],
+    color: "from-amber-500 to-orange-500",
+  },
   {
     role: "Data Analyst ",
     company: "Bluestock fintech",
@@ -1486,21 +1500,30 @@ export default function App() {
                       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-sm transition-all duration-300 hover:border-white/20">
                         <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
                           <div>
-                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-purple-400 transition-colors">
-                              {exp.role}
-                            </h3>
+                            <div className="flex items-center gap-3 flex-wrap">
+                              <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-purple-400 transition-colors">
+                                {exp.role}
+                              </h3>
+                              {exp.type && (
+                                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                                  {exp.type}
+                                </span>
+                              )}
+                            </div>
                             <div className="flex items-center flex-wrap gap-2 mt-2 text-zinc-300 font-medium">
                               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
                               {exp.company}
-                              <a
-                                href={exp.certificateUrl || "#"}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-md hover:bg-pink-500/20 hover:border-pink-500/30 transition-all text-xs font-semibold"
-                              >
-                                <Award className="w-3.5 h-3.5" />
-                                Certificate
-                              </a>
+                              {exp.certificateUrl && (
+                                <a
+                                  href={exp.certificateUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-md hover:bg-pink-500/20 hover:border-pink-500/30 transition-all text-xs font-semibold"
+                                >
+                                  <Award className="w-3.5 h-3.5" />
+                                  Certificate
+                                </a>
+                              )}
                             </div>
                           </div>
                           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-400 whitespace-nowrap h-fit">
